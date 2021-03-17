@@ -1,0 +1,41 @@
+
+<% layout('../layouts/emptyLayout') -%>
+
+<% script('/backend/static/js/login.js') -%>
+
+<div class="bg_blue_dark fit-window-height">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header">
+                                <h3 class="text-center font-weight-light my-4">Login</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="warning_msg" class="alert alert-danger" role="alert" style="display:none;"> </div>
+                                <form>
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="username">員編</label>
+                                        <input class="form-control py-4" id="username" type="text" placeholder="請輸入帳號" autocomplete="off" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="password">密碼</label>
+                                        <input class="form-control py-4" id="password" type="password" placeholder="請輸入密碼" autocomplete="off" value="" />
+                                    </div>
+                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                        <button type="submit" class="btn btn-primary">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="small">聯絡管理員以取得帳號</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

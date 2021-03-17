@@ -1,0 +1,97 @@
+
+    
+    <div class="d-flex align-items-baseline mx-2">
+        <h4># 專案 & 團隊</h4>
+        <small class="ml-2">編輯專案(團隊)設定</small>
+    </div>
+
+    <!-- <div class="container"> -->
+    <div class="row mx-0" content="projects">
+        <div class="col-lg-6 col-md-12 mt-1 px-0">
+            <div class="card mr-1"> 
+                <h5 class="card-header py-1 bg_blue_light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="py-2" data-toggle="collapse" data-target="#collapse-newProject" aria-expanded="true">
+                            <i class="fas fa-chevron-down mr-3"></i>新增專案
+                        </div>
+                        <div>
+                            <button action="addProject" type="button" class="btn btn-sm btn-outline-primary">新增</button>
+                        </div>
+                    </div>
+                </h5>
+                <div class="collapse" id="collapse-newProject">
+                    <div class="card-body">
+                        <form autocomplete="off">
+                            <h4>基本設定</h4>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-2">
+                                    <label class="col-form-label-sm" for="projectName">PROJECT_NAME</label>
+                                    <input class="form-control form-control-sm" name="projectName" value="">
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                    <label class="col-form-label-sm" for="projectId">PROJECT_ID</label>
+                                    <input type="text" class="form-control form-control-sm" name="projectId" value="">
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="url">MEMO</label>
+                                <input type="text" class="form-control form-control-sm" name="memo" value="">
+                            </div>
+
+                            <div class="border-top my-4"></div>
+                            <h4>watson設定</h4>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="aiConfig_url">URL</label>
+                                <input type="text" class="form-control form-control-sm" name="aiConfig_url" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="aiConfig_apikey">APIKEY</label>
+                                <input type="password" class="form-control form-control-sm" name="aiConfig_apikey" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="aiConfig_skillId">SKILLID</label>
+                                <input type="text" class="form-control form-control-sm" name="aiConfig_skillId" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="aiConfig_version">VERSION</label>
+                                <input class="form-control form-control-sm" name="aiConfig_version" value="">
+                            </div>
+
+                            <div class="border-top my-4"></div>
+                            <h4>資料庫連線設定</h4>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="dbConfig_dbName">Database</label>
+                                <input type="text" class="form-control form-control-sm" name="dbConfig_database" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="dbConfig_account">Account</label>
+                                <input type="text" class="form-control form-control-sm" name="dbConfig_account" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="dbConfig_password">Password</label>
+                                <input type="password" class="form-control form-control-sm" name="dbConfig_password" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="dbConfig_host">Host</label>
+                                <input type="text" class="form-control form-control-sm" name="dbConfig_host" value="">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label-sm" for="dbConfig_port">Port</label>
+                                <input type="text" class="form-control form-control-sm" name="dbConfig_port" value="">
+                            </div>
+                            <div class="form-row flex-row-reverse px-1">
+                                <button action="addProject" type="button" class="btn btn-sm btn-outline-primary">新增</button>
+                                <p id="project_alert" class="text-danger" style="display: none">err</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div>x -->
+    </div>
+    <div class="mt-4 border-bottom"></div>
+    <div class="mt-1 border-bottom"></div>
+
+    <script src="/backend/static/js/components/setting/project.js"></script>
+

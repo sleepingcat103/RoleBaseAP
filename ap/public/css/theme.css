@@ -1,0 +1,166 @@
+/* by GB */
+.text_grey_light{color:rgba(0,0,0,0.05) !important;}
+.text_grey{color:rgba(0,0,0,0.55) !important;}
+.text_grey_dark{color:#4a4a4a !important;}
+.text_yellow_light{color:#ffdc61 !important;}
+.text_yellow{color:#ffca10 !important;}
+.text_yellow_dark{color:#eeb31d !important;}
+.text_blue_light{color:#68b9eb !important;}
+.text_blue{color:rgb(44, 176, 216) !important;}
+.text_blue_dark{color:#0c3049 !important;}
+.text_white{color:#fff !important;}
+.text_teal{color:#71d8e1 !important;}
+.text_green{color:#6aa729 !important;}
+.text_red{color:#eb384e !important;}
+.text_orange{color:#ea6d00 !important;}
+.bg_grey_light{background-color:#e8e8e8 !important;}
+.bg_grey_lighter{background-color:rgba(0,0,0,0.03) !important;}
+.bg_grey{background-color:rgba(0,0,0,0.55) !important;}
+.bg_grey_dark{background-color:#4a4a4a !important;}
+.bg_yellow_light{background-color:#ffdc61 !important;}
+.bg_yellow{background-color:#ffca10 !important;}
+.bg_yellow_dark{background-color:#eeb31d !important;}
+.bg_blue_light{background-color:rgb(208, 231, 245) !important;}
+.bg_blue_lighter{background-color:rgb(200, 225, 241) !important;}
+.bg_blue{background-color:rgb(44, 176, 216)  !important;}
+.bg_blue_dark{background-color:#0c3049 !important;}
+.bg_white{background-color:#fff !important;}
+.bg_white_light{background-color:rgba(255,255,255,0.8) !important;}
+.bg_teal{background-color:#71d8e1 !important;}
+.bg_teal_dark{background-color:#47c2c8 !important;}
+.bg_green{background-color:#6aa729 !important;}
+.bg_green_light{background-color:#dbf3ee !important;}
+.bg_red{background-color:#eb384e !important;}
+.bg_red_light{background-color:rgb(254, 171, 176) !important;}
+.bg_red_lighter{background-color:rgb(248, 225, 226) !important;}
+.bg_orange{background-color:#ea6d00 !important;}
+.bg_body{background-color:#eff2f5 !important;}
+.btn_outline_grey_light{color:rgba(0,0,0,0.05) !important; border-color:rgba(0,0,0,0.05) !important;}
+.btn_outline_grey{color:rgba(0,0,0,0.55) !important; border-color:rgba(0,0,0,0.55) !important;}
+.btn_outline_grey_dark{color:#4a4a4a !important; border-color:#4a4a4a !important;}
+.btn_outline_yellow_light{color:#ffdc61 !important; border-color:#ffdc61 !important;}
+.btn_outline_yellow{color:#ffca10 !important; border-color:#ffca10 !important;}
+.btn_outline_yellow_dark{color:#eeb31d !important; border-color:#eeb31d !important;}
+.btn_outline_blue_light{color:#68b9eb !important; border-color:#68b9eb !important;}
+.btn_outline_blue{color:rgb(44, 176, 216)  !important; border-color:rgb(44, 176, 216)  !important; background-color:#FFF  !important;}
+.btn_outline_blue_dark{color:#0c3049 !important; border-color:#0c3049 !important;}
+.btn_outline_white{color:#fff !important; border-color:#fff !important;}
+.btn_outline_teal{color:#71d8e1 !important; border-color:#71d8e1 !important;}
+.btn_outline_green{color:#6aa729 !important; border-color:#6aa729 !important;}
+.btn_outline_red{color:#eb384e !important; border-color:#eb384e !important;}
+.btn_outline_orange{color:#ea6d00 !important; border-color:#ea6d00 !important;}
+.border_grey_light{border-color:rgba(0,0,0,0.05) !important;}
+.border_grey{border-color:rgba(0,0,0,0.55) !important;}
+.border_grey_dark{border-color:#4a4a4a !important;}
+.border_yellow_light{border-color:#ffdc61 !important;}
+.border_yellow{border-color:#ffca10 !important;}
+.border_yellow_dark{border-color:#eeb31d !important;}
+.border_blue_light{border-color:#68b9eb !important;}
+.border_blue{border-color:rgb(44, 176, 216) !important;}
+.border_blue_dark{border-color:#0c3049 !important;}
+.border_white{border-color:#fff !important;}
+.border_teal{border-color:#71d8e1 !important;}
+.border_green{border-color:#6aa729 !important;}
+.border_red{border-color:#eb384e !important;}
+.border_orange{border-color:#ea6d00 !important;}
+
+.bg_blue_linear {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#40c2c9+49,83DAF5+100 */
+  background: #40c2c9;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #40c2c9 49%, rgb(44, 176, 216)  100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #40c2c9 49%, rgb(44, 176, 216)  100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #40c2c9 49%, rgb(44, 176, 216)  100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#40c2c9', endColorstr='rgb(44, 176, 216) ', GradientType=0);
+  /* IE6-9 */
+  background-attachment: fixed !important;
+}
+
+a,
+a:hover {
+  color: rgb(44, 176, 216) ;
+  cursor: pointer;
+}
+.btn:focus, .btn.focus {
+  box-shadow: none;
+}
+a.bg_blue:hover,
+a.bg_blue:not(:disabled):not(.disabled).active,
+a.bg_blue:not(:disabled):not(.disabled):active,
+button.bg_blue:hover,
+button.bg_blue:focus,
+button.bg_blue:active {
+  background-color: #2591ba !important;
+}
+a.bg_green:hover,
+a.bg_green:not(:disabled):not(.disabled).active,
+a.bg_green:not(:disabled):not(.disabled):active,
+button.bg_green:hover,
+button.bg_green:focus,
+button.bg_green:active {
+  background-color: #598f1f !important;
+}
+a.bg_teal_dark:hover,
+a.bg_teal_dark:not(:disabled):not(.disabled).active,
+a.bg_teal_dark:not(:disabled):not(.disabled):active,
+button.bg_teal_dark:hover,
+button.bg_teal_dark:focus,
+button.bg_teal_dark:active {
+  background-color: #3ba7ac !important;
+}
+a.bg_grey:hover,
+a.bg_grey:not(:disabled):not(.disabled).active,
+a.bg_grey:not(:disabled):not(.disabled):active,
+button.bg_grey:hover,
+button.bg_grey:focus,
+button.bg_grey:active {
+  background-color: rgba(0,0,0,0.65) !important;
+}
+a.btn_outline_blue:hover,
+a.btn_outline_blue:not(:disabled):not(.disabled).active,
+a.btn_outline_blue:not(:disabled):not(.disabled):active,
+button.btn_outline_blue:hover,
+button.btn_outline_blue:focus,
+button.btn_outline_blue:active,
+a.btn_outline_red:hover,
+a.btn_outline_red:not(:disabled):not(.disabled).active,
+a.btn_outline_red:not(:disabled):not(.disabled):active,
+button.btn_outline_red:hover,
+button.btn_outline_red:focus,
+button.btn_outline_red:active,
+a.btn_outline_green:hover,
+a.btn_outline_green:not(:disabled):not(.disabled).active,
+a.btn_outline_green:not(:disabled):not(.disabled):active,
+button.btn_outline_green:hover,
+button.btn_outline_green:focus,
+button.btn_outline_green:active,
+a.btn_outline_grey:hover,
+a.btn_outline_grey:not(:disabled):not(.disabled).active,
+a.btn_outline_grey:not(:disabled):not(.disabled):active,
+button.btn_outline_grey:hover,
+button.btn_outline_grey:focus,
+button.btn_outline_grey:active {
+  background-color: rgb(233, 245, 247)!important;
+}
+
+label.btn_outline_blue:hover {
+  background-color: rgb(233, 245, 247) !important;
+  color: rgb(44, 176, 216)  !important;
+}
+label.btn_outline_blue:not(:disabled):not(.disabled).active,
+label.btn_outline_blue:not(:disabled):not(.disabled):active {
+  background-color: rgb(44, 176, 216)  !important;
+  color: #FFF !important;
+}
+
+a.btn_outline_white:hover,
+a.btn_outline_white:not(:disabled):not(.disabled).active,
+a.btn_outline_white:not(:disabled):not(.disabled):active,
+button.btn_outline_white:hover,
+button.btn_outline_white:focus,
+button.btn_outline_white:active {
+  background-color: rgba(0,0,0,0.07) !important;
+}

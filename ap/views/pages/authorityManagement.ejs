@@ -1,0 +1,147 @@
+
+<div tab="authorityManagement">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>專案授權管理</h3>
+                <div class="d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn btn-sm btn-primary text_white text-nowrap" id="add_authority"><i class="fas fa-plus mr-1"></i>新增人員</button>
+                </div>
+            </div>
+        </div>
+        <div class="my-4">
+            <div id="warning_msg" class="alert alert-danger" role="alert" style="display: none;"></div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>使用者</th>
+                            <th>啟用中</th>
+                            <th>身分組</th>
+                            <th>備註</th>
+                            <th>編輯</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- user list -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="insertAuthority" role="sidebar">
+        <div class="sidebar-header">
+            <h3 class="mb-0">新增授權</h3>
+        </div>
+        <div class="sidebar-body">
+            <div class="container px-0">
+                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">使用者</span>
+                            </div>
+                            <input id="user_id" type="text" class="form-control col" placeholder="" value="">
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">用戶組</span>  
+                            </div>
+                            <select class="custom-select" id="user_role"> </select>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">啟用</span>  
+                            </div>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <input id="user_active" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">備註</span>  
+                            </div>
+                            <input id="user_memo" type="text" class="form-control col" placeholder="" value="">
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <p id="user_alert" class="text-danger mb-0" style="display: none">.text-danger</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <button type="button" action="insert" class="btn btn-primary btn-block">新增</button>
+            <button type="button" action="cancel" class="btn btn-secondary btn-block">取消</button>
+        </div>
+    </div>
+    
+    <div id="editAuthority" role="sidebar">
+        <div class="sidebar-header">
+            <h3 class="mb-0">編輯授權</h3>
+        </div>
+        <div class="sidebar-body">
+            <div class="container px-0">
+                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">使用者</span>
+                            </div>
+                            <input id="user_id" type="text" class="form-control col" placeholder="" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">用戶組</span>  
+                            </div>
+                            <select class="custom-select" id="user_role"> </select>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">啟用</span>  
+                            </div>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <input id="user_active" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">備註</span>  
+                            </div>
+                            <input id="user_memo" type="text" class="form-control col" placeholder="" value="">
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <p id="user_alert" class="text-danger mb-0" style="display: none">err</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <button type="button" action="update" class="btn btn-primary btn-block">編輯</button>
+            <button type="button" action="cancel" class="btn btn-secondary btn-block">取消</button>
+            <button type="button" action="delete" class="btn btn-outline-danger btn-block pt-2">刪除</button>
+        </div>
+    </div>
+    
+    <script src="/backend/static/js/features/authorityManagement.js"></script>
+</div>

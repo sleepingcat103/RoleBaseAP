@@ -1,0 +1,151 @@
+<% layout('../../../views/layouts/noLayout') -%>
+
+<% script(`/backend/projects/${ projectId }/public/javascripts/report.js`) -%>
+
+<div class="overflow-auto" tab="report">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <!-- <div class="d-flex justify-content-between align-items-center"> -->
+                <h3>報表檢視</h3>
+            <!-- </div> -->
+        </div>
+        <div class="mt-4">
+            <div class="sticky-top">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="table1-tab" no="0" data-toggle="tab" href="#table1" role="tab" aria-controls="table1" aria-selected="true">互動總表</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="table2-tab" no="1" data-toggle="tab" href="#table2" role="tab" aria-controls="table2" aria-selected="false">自然發話</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="table3-tab" no="2" data-toggle="tab" href="#table3" role="tab" aria-controls="table3" aria-selected="false">詢問排行</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="table4-tab" no="3" data-toggle="tab" href="#table4" role="tab" aria-controls="table4" aria-selected="false">回答排行</a>
+                    </li>
+                </ul>
+                <div class="d-flex justify-content-start align-items-center border rounded shadow-sm my-2 p-2">
+                    <!-- <button id="range_All" class="btn btn-outline-primary rounded-circle p-0 mr-2" type="button" style="width:2rem; height:2rem;">ALL</button> -->
+                    <button id="range_Mondh" class="btn btn-outline-primary rounded-circle p-0 mr-2" type="button" style="width:2rem; height:2rem;">月</button>
+                    <button id="range_Week" class="btn btn-outline-primary rounded-circle p-0 mr-2" type="button" style="width:2rem; height:2rem;">周</button>
+                    <button id="range_Day" class="btn btn-outline-primary rounded-circle p-0 mr-2" type="button" style="width:2rem; height:2rem;">日</button>
+                    <!-- <span class="mr-2">|</span> -->
+                    <div class="input-group input-group-sm w-50 mr-2" content="search-period">
+                        <input type="text" id="startDt" class="form-control" input-content="datepicker" autocomplete="off" placeholder="YYYY/MM/DD">
+                        <div class="input-group-append">
+                            <span class="mx-2">~</span>
+                        </div>
+                        <input type="text" id="endDt" class="form-control" input-content="datepicker" autocomplete="off" placeholder="YYYY/MM/DD">
+                    </div>
+                    <!-- <span class="mr-2">|</span> -->
+                    <button action="search" type="button" class="btn btn-sm btn-primary mr-2">查詢</button>
+                    <button action="download" type="button" class="btn btn-sm btn-outline-primary">下載</button>
+                    <!-- <div class="d-flex justify-content-end align-items-center">
+                        <select class="custom-select custom-select-sm mr-2" style="width: 4rem" id="">
+                            <option value="100" selected>100</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="5000">5000</option>
+                        </select>
+                        <small class="mr-2">第 1 頁</small>
+                        <div class="btn-group mr-2 d-none" role="group" content="sec_1">
+                            <button type="button" class="btn btn-sm btn_outline_blue" content="pre_page">上一頁</button>
+                            <button type="button" class="btn btn-sm btn_outline_blue" content="next_page">下一頁</button>
+                        </div>
+                        <div class="btn-group mr-2" role="group" content="sec_2">
+                            <button type="button" class="btn btn-sm btn-primary" content="go_to_page" page="1">1</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" content="go_to_page" page="2">2</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" content="go_to_page" page="3">3</button>
+                        </div>
+                        <div class="btn-group" style="width: 5rem" role="group" content="sec_3">
+                            <div class="input-group input-group-sm" role="group">
+                                <input type="text" class="form-control" content="fly_page">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="button" content="fly_to_page">GO</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="table1" role="tabpanel" aria-labelledby="table1-tab">
+                    <div class="table-responsive">
+                        <table id="interactions" class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>時間</th>
+                                    <th>SESSION ID</th>
+                                    <th>動作</th>
+                                    <th>訊息</th>
+                                    <th>意圖</th>
+                                    <th>意圖信心</th>
+                                    <th>實體</th>
+                                    <th>答案包編號</th>
+                                    <th>答案包說明</th>
+                                    <th>備註</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="table2" role="tabpanel" aria-labelledby="table2-tab">
+                    <div class="table-responsive">
+                        <table id="chats" class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>時間</th>
+                                    <th>SESSION ID</th>
+                                    <th>動作</th>
+                                    <th>訊息</th>
+                                    <th>意圖</th>
+                                    <th>意圖信心</th>
+                                    <th>實體</th>
+                                    <th>答案包編號</th>
+                                    <th>答案包說明</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="table3" role="tabpanel" aria-labelledby="table3-tab">
+                    <div class="table-responsive">
+                        <table id="questionRank" class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>訊息</th>
+                                    <th>意圖</th>
+                                    <th>平均信心</th>
+                                    <th>按鈕觸發</th>
+                                    <th>發話觸發</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="table4" role="tabpanel" aria-labelledby="table4-tab">
+                    <div class="table-responsive">
+                        <table id="answerRank" class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>答案包編號</th>
+                                    <th>動作</th>
+                                    <th>答案包說明</th>
+                                    <th>備註</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

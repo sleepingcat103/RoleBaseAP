@@ -1,0 +1,96 @@
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mt-3"># 管理員帳號</h4>
+        
+        <button id="addAdmin" type="button" class="btn btn-sm btn-primary">
+            <i class="fas fa-plus mr-1"></i>新增管理員帳號
+        </button>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>使用者</th>
+                    <th>啟用</th>
+                    <th>建立時間</th>
+                    <th>最後編輯</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- user list -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="row mx-0" content="admins">
+        <!-- <div class="col-xl-3 col-md-4 col-6 px-0">
+            <div class="border rounded px-1 py-1 mt-1 mr-1">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control">
+                    <div class="input-group-append">
+                      <button class="btn btn-success"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+        <!-- <div class="col-xl-3 col-md-4 col-6 px-0">
+            <button id="addAdmin" type="button" class="btn btn-block btn-outline-primary px-1 py-2 mt-1 mr-1">
+                <i class="fas fa-plus mr-1"></i>新增管理員帳號
+            </button>
+        </div>
+    </div> -->
+    <div class="mt-4 border-bottom"></div>
+    <div class="mt-1 border-bottom"></div>
+    
+    <div id="addAdminSidebar" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">新增管理員帳號</h3>
+            </div>
+            <div class="sidebar-body">
+                <div class="container px-0">
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">帳號</span>
+                                </div>
+                                <input id="userId" type="text" class="form-control col" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-12 my-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">密碼</span>
+                                </div>
+                                <input id="password" type="password" class="form-control col" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-12 my-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">確認密碼</span>
+                                </div>
+                                <input id="passwordAgain" type="password" class="form-control col" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-12 my-2">
+                            <p id="admin_alert" class="text-danger mb-0" style="display: none">err</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button type="button" action="create" class="btn btn-primary">新增</button>
+                <button type="button" class="btn btn-secondary" data-toggle="sidebar">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/backend/static/js/components/setting/admin.js"></script>
+

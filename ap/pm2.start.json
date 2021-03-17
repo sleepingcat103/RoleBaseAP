@@ -1,0 +1,15 @@
+
+{
+    "apps": {
+        "name": "roleBaseBackend",
+        "exec": "bin\\www",
+        "watch": true,
+        "ignore_watch": [
+            "node_modules",
+            "Logmanager"
+        ],
+        "error_file": "Logmanager/pm2/err.log",
+        "out_file": "Logmanager/pm2/out.log",
+        "log_date_format": "YYYY-MM-DD HH:mm:ss"
+    }
+}

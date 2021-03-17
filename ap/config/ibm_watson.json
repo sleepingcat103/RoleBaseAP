@@ -1,0 +1,11 @@
+
+{
+    "assistant_id": "d82aecd3-f851-43c6-b71e-554ed3a99a86",
+    "api_key": "VGYyjqkwnQF-g684YIa_LvNJrhHiOToSalxdXAUixyt-",
+    "iam_apikey_description": "Auto-generated for key 9bc019c2-b9f4-4073-8399-81118897a3aa",
+    "iam_apikey_name": "test-1",
+    "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+    "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/58aeff81344a4013a228b72e97f54637::serviceid:ServiceId-24b200ec-23d0-4b89-a2b8-13933e05366b",
+    "url": "https://gateway.watsonplatform.net/assistant/api",
+    "workspace_id": "cba37119-3190-4c88-8d59-cbb87e9123f5"
+  }

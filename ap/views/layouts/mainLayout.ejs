@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,Chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <title>後台</title>
+
+    <%- include ../stylesheets/commonCss %>
+    <%- include ../stylesheets/tableCss %>
+    <%- stylesheets %>
+    
+  </head>
+  <body class="sb-nav-fixed">
+    <section>
+      <%- partial('../components/layout/header') %>
+    </section>
+
+    <div id="layoutSidenav" class="wrapper" style="overflow: hidden;">
+
+      <section id="layoutSidenav_nav" class="active">
+        <%- partial('../components/layout/sidebar', { authorities: authorities }) %>
+      </section>
+      
+      <section id="layoutSidenav_content">
+        <%- body -%>
+      </section>
+      
+    </div>
+    
+    <%- include ../scripts/commonScripts %>
+    <%- include ../scripts/tableScripts %>
+    <%- scripts %>
+  </body>
+</html>

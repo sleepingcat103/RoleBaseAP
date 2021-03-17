@@ -1,0 +1,239 @@
+<% layout('../../../views/layouts/noLayout') -%>
+<% script(`/backend/projects/${ projectId }/public/javascripts/answerPack.js`) -%>
+
+<div tab="answerPack">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>答案包編輯</h3>
+                
+                <div class="d-flex justify-content-end align-items-center">
+					<button type="button" class="btn btn-sm bg_blue text_white text-nowrap ml-2" id="log"><i class="fas fa-clipboard-list mr-1"></i>變更紀錄</button>
+					<span class="ml-2">|</span>
+					<button type="button" class="btn btn-sm bg_red text_white text-nowrap ml-2" id="clear"><i class="fas fa-ban mr-1"></i>清空</button>
+					<button type="button" class="btn btn-sm bg_green text_white text-nowrap ml-2" id="preview"><i class="fas fa-eye mr-1"></i>預覽</button>
+					<span class="ml-2">|</span>
+					<!-- <button type="button" class="btn btn-sm btn-info ml-2" id="create"><i class="fas fa-plus mr-1"></i>新增</button> -->
+					<button type="button" class="btn btn-sm btn-primary ml-2" id="save" style="width: 10rem;"><i class="fas fa-save mr-1"></i>儲存編輯</button>
+				</div>
+            </div>
+        </div>
+        <div class="my-4">
+            <div class="main-block">
+                <div class="row">
+                    <textarea id="editing_message" class="d-none"></textarea>
+
+                    <div class="col-4 col-lg-4 col-xl-3 px-0">
+                        <div class="rounded bg_grey_lighter main-block py-2 px-3">
+                            <div class="text-center">
+                                <h5 class="mt-2">答案包</h5>
+                            </div>
+                            <hr/>
+                            <div class="input-group input-group-sm mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">搜尋</span>
+                                </div>
+                                <input type="text" class="form-control" id="searchAnswerpackInput" value="<%= ansId || '' %>">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="searchAnswerpack"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            <!-- <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">搜尋ID</span>
+                                </div>
+                                <input type="text" class="form-control" id="filterAnswerpack">
+                            </div> -->
+                            <hr/>
+                            <div class="overflow-auto" style="height: calc(100% - 12rem)">
+                                <div id="answerpacksField">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 col-lg-3 col-xl-3">
+                        <div class="rounded bg_grey_lighter main-block py-2 px-3">
+                            
+                            <div class="text-center">
+                                <h5 class="mt-2">訊息選單</h5>
+                            </div>
+                            <hr>
+                            <!-- 所有訊息功能 -->
+                            <div class="overflow-auto" style="height: calc(100% - 5rem)">
+                                <div id="add_card_buttons">
+                                    <div class="text-center text-muted mb-2">- 基本訊息 -</div>
+                                    <button type="button" target="text" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>文字</button>
+                                    <button type="button" target="option" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>選項</button>
+                                    <button type="button" target="image" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>圖片</button>
+                                    
+                                    <div class="text-center text-muted mt-4 mb-2">- 進階訊息 -</div>
+                                    <button type="button" target="card" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>一覽</button>
+                                    <button type="button" target="slider" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>輪播</button>
+                                        
+                                    <div class="text-center text-muted mt-4 mb-2">- 複合訊息 -</div>
+                                    <button type="button" target="wb" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>文&選</button>
+                                    <button type="button" target="wp" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>文&圖</button>
+                                    <button type="button" target="wpb" class="btn btn-block btn-sm btn_outline_blue bg_white mb-2 add">
+                                        <i class="fas fa-plus mr-1"></i>文&圖&選</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5 col-lg-5 col-xl-6 px-0">
+                        <div class="rounded bg_grey_lighter main-block py-2 px-3">
+                            <div class="text-center">
+                                <h5 class="mt-2">編輯區</h5>
+                            </div>
+                            <hr>
+                            <div class="overflow-auto" style="height: calc(100% - 5rem)">
+                                <div class="row mx-0">
+                                    <div class="col-12 col-lg-12 col-xl-6 pr-xl-2 px-0">
+                                        <div class="input-group input-group-sm mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">ANSWER_ID</span>
+                                            </div>
+                                            <input type="text" class="form-control" id="ansId">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12 col-xl-6 pl-xl-2 px-0">
+                                        <div class="input-group input-group-sm mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">STYLE</span>
+                                            </div>
+                                            <select class="custom-select" id="style">
+                                                <option value="1">大標題</option>
+                                                <option value="2">一般樣式</option>
+                                                <option value="3">最後一層</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12 col-xl-6 pr-xl-2 px-0">
+                                        <div class="input-group input-group-sm mb-2 mb-xl-0">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">DETAIL</span>
+                                            </div>
+                                            <input type="text" class="form-control" id="detail">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12 col-xl-6 pl-xl-2 px-0">
+                                        <div class="input-group input-group-sm mb-0 mb-xl-0">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">ANS_NAME</span>
+                                            </div>
+                                            <input type="text" class="form-control" id="ansName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div id="editArea"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 檔案相關 -->
+    <div id="fileSystemSidebar" class="sidebar sidebar-lg" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">檔案系統</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div>
+                    <h4>檔案上傳</h4>
+                    <div class="input-group mb-2">
+                        <input type="file" class="form-control" name="uploadFile">
+                        <div class="input-group-append">
+                            <button id="fileUpload" class="btn btn-outline-primary" type="button">上傳</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top"></div>
+                <div class="d-flex">
+                    <div class="w-50 pt-2 pr-2" content="documentFiles">
+                        <div class="d-flex justify-content-between">
+                            <h4>文件</h4>
+                            <button type="button" action="reload" class="btn btn-sm btn-outline-secondary">Reload</button>
+                        </div>
+                        <ol class="overflow-auto mb-0" style="height: calc(100vh - 18rem);padding-left: 2rem;">
+                            <li>
+                                <div>
+                                    xxxx/xxx/xxx.pdf
+                                    <button type="button" class="btn btn-sm btn-outline-info" action="selectFile">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+                            </li>
+                            
+                        </ol>
+                    </div>
+                    <div class="border-left"></div>
+                    <div class="w-50 pt-2 pl-2" content="mediaFiles">
+                        <div class="d-flex justify-content-between">
+                            <h4>圖片</h4>
+                            <button type="button" action="reload" class="btn btn-sm btn-outline-secondary">Reload</button>
+                        </div>
+                        <ol class="overflow-auto mb-0" style="height: calc(100vh - 18rem);padding-left: 2rem;">
+                            <li>..</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 變更紀錄 -->
+    <div id="changeLogSidebar" class="sidebar sidebar-lg" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">變更紀錄</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div class="d-flex mb-2">
+                    <input type="text" class="d-none" id="searchParam">
+
+                    <div class="input-group input-group-sm mr-2">
+                        <input type="text" id="startDt" class="form-control" input-content="datepicker" autocomplete="off" placeholder="from">
+                        
+                        <div class="input-group-append">
+                            <span class="mx-2">~</span>
+                        </div>
+                        <input type="text" id="endDt" class="form-control" input-content="datepicker" autocomplete="off" placeholder="to">
+                    </div>
+                    <div class="input-group input-group-sm mr-2">
+                        <input id="ansId" type="text" class="form-control" placeholder="ansId">
+                    </div>
+                    <div class="input-group input-group-sm mr-2">
+                        <input id="userId" type="text" class="form-control" placeholder="userId">
+                    </div>
+                    <button id="searchChangeLog" type="button" class="btn btn-sm bg_blue text_white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="accordion mb-2" id="accordionChangeLog"></div>
+                <button id="moreChangeLog" type="button" class="btn btn-block btn-sm btn-outline-primary" style="display: none;">
+                    更多結果
+                </button>
+            </div>
+        </div>
+    </div>
+    
+</div>

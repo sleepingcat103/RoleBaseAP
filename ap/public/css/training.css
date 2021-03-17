@@ -1,0 +1,50 @@
+/** 
+ * 批次訓練 */
+ .training_list {
+    height: calc(87vh - 4rem);
+    /* margin: 0 1rem; */
+  }
+  .training_list .training_list_body {
+    overflow: auto;
+    padding: 0;
+    counter-reset: section;
+    list-style-type: none;
+    margin-bottom: 0;
+    height: calc(100vh - 14rem);
+  }
+  .training_list .training_list_body li {
+    padding: .5rem 1rem .5rem .5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .training_list .training_list_body li .training_list_item::before {
+    counter-increment: section;
+    content: counters(section, ".") " ";
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.5) ;
+    text-align: center;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    padding-top: 0.1rem;
+    background-color: rgba(0,0,0,0.05) ;
+    border-radius: 1rem;
+    
+  }
+  .training_list .training_list_body li:nth-child(odd) {
+    background-color: rgba(0,0,0,0.01) ;
+  }
+  .training_list .training_list_body li:nth-child(even) {
+    background-color: rgba(0,0,0,0.01) ;
+  }
+  .training_list .training_list_body li:hover {
+    background-color: #FFF ;
+  }
+  .training_list .training_list_body .training_list_item {
+    display: flex;
+    align-items: center;
+  }
+  .training_list_item .btn-group {
+    margin-left: auto;
+  }
+  .training_list_item .training_list_content {
+    padding: 0 0.5rem;
+  }

@@ -1,0 +1,72 @@
+
+<%- include ../components/blocks %>
+
+<div tab="environmentSetting">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>環境設定</h3>
+                
+            </div>
+        </div>
+        <div class="my-4 px-0">
+            <div class="row">
+                <div class="main-block col-3 col-xl-2 border-right">
+                    <span class="ml-3">目錄</span>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#test1"># 專案 & 團隊</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#test2"># 身分組</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#test3"># 管理員帳號</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#test4"># 功能排序</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#test5"># 使用者管理</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="main-block col-9 col-xl-10 overflow-auto">
+                    <div id="test1" class="mb-3" component="project">
+                        <h4># 專案 & 團隊</h4>
+                        <div style="height: 10rem">
+                            <%-blocks["overlay-spinner"]%>
+                        </div>
+                    </div>
+                    <div id="test2" class="mb-3" component="role">
+                        <h4 class="mt-5"># 身分組</h4>
+                        <div style="height: 10rem">
+                            <%-blocks["overlay-spinner"]%>
+                        </div>
+                    </div>
+                    <div id="test3" class="mb-3" component="admin">
+                        <h4 class="mt-5"># 管理員帳號</h4>
+                        <div style="height: 10rem">
+                            <%-blocks["overlay-spinner"]%>
+                        </div>
+                    </div>
+                    <div id="test4" class="mb-3" component="feature">
+                        <h4 class="mt-5"># 功能排序</h4>
+                        <div style="height: 10rem">
+                            <%-blocks["overlay-spinner"]%>
+                        </div>
+                    </div>
+                    <div id="test5" class="mb-3" component="user">
+                        <h4 class="mt-5"># 使用者管理</h4>
+                        <div style="height: 10rem">
+                            <%-blocks["overlay-spinner"]%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="/backend/static/js/features/environmentSetting.js"></script>
+</div>

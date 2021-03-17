@@ -1,0 +1,100 @@
+<% layout('../../../views/layouts/noLayout') -%>
+
+<% script(`/backend/projects/${ projectId }/public/javascripts/mindMap.js`) -%>
+<% script(`/backend/static/plugin/jsmind/jsmind.js`) -%>
+
+<% stylesheet(`/backend/static/plugin/jsmind/jsmind.css`) -%>
+
+<div tab="mindMap">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>心智圖 <small class="text-muted">編輯 watson 內容</small></h3>
+                
+                <button type="button" class="btn btn-sm btn-primary" id="search" style="width:10rem;">
+                    <i class="fas fa-search mr-1"></i>搜尋節點
+                </button>
+            </div>
+        </div>
+        <div class="my-4">
+            <div class="main-block" id="jsmind_container">
+                <!-- <div id="jsmind_container"></div> -->
+            </div>
+        </div>
+    </div>
+
+    <div id="editSidebar" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">節點內容</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div class="form-group">
+                    <label for="nodeType">節點種類</label>
+                    <span name="nodeType">folder</span>
+                </div>
+                <div class="form-group">
+                    <label for="nodeTitle">節點名稱</label>
+                    <input type="text" class="form-control" name="nodeTitle" disabled>
+                </div>
+                <div class="form-group pt-2">
+                    <label for="conditions">進入條件</label>
+                    <input type="text" class="form-control" name="conditions" disabled>
+                </div>
+                <div class="form-group pt-2" id="chooseType">
+                    <label for="chooseType">回覆方式</label>
+                    <select class="form-control" name="chooseType" disabled>
+                        <option value="sequential">依序</option>
+                        <option value="random">隨機</option>
+                        <option value="multiline">全部</option>
+                    </select>
+                </div>
+                <div class="form-group pt-2" id="nodeReturn">
+                    <!-- <label for="nodeReturn">回覆<span id="addReturn" class="badge badge-light border clickable ml-2">+</span></label> -->
+                    <label for="nodeReturn">回覆</label>
+                    <div name="nodeReturn">
+                    </div>
+                </div>
+                <div class="form-group d-none">
+                    <input type="text" class="form-control" name="nodeId">
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <!-- <button type="button" action="update" class="btn btn-primary btn-block">儲存</button> -->
+                <!-- <button type="button" action="cancel" class="btn btn-secondary btn-block" data-toggle="sidebar">取消</button> -->
+                <!-- <button type="button" action="delete" class="btn btn-outline-danger btn-block pt-2">刪除</button> -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="searchSidebar" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">搜尋節點</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div class="input-group input-group-sm">
+                    <input id="searchContent" type="text" class="form-control col" placeholder="" value="">
+                    <div class="input-group-append">
+                        <button action="search" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div content="searchReault">
+                    
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+            </div>
+        </div>
+    </div>
+</div>

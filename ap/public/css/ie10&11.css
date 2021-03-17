@@ -1,0 +1,12 @@
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* 修正input沒有內容的問題 */
+    input {
+        height: auto !important;
+        line-height: 0.1rem !important;
+    }
+
+    .sidebar .sidebar-content { right: -300px; width: 300px;}
+    .sidebar.sidebar-md .sidebar-content { right: -400px; width: 400px; }
+    .sidebar.sidebar-lg .sidebar-content { right: -600px; width: 600px; }
+}

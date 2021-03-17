@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content=""> 
+
+        <link rel="stylesheet" href="<%= `/backend/projects/${ projectId }/preview/font/css/font-awesome.min.css` %>">
+        <link rel="stylesheet" href="<%= `/backend/projects/${ projectId }/preview/css/app.css` %>">
+    </head>
+
+    <body>
+        <div id="chat-column-holder" class="responsive-column content-column">
+            <div class="chat-column">
+                <div id="scrollingChat"></div>
+                <div id="typingbot" class="hide">輸入中...</div>
+                <div id="inputDIV">
+                <label class="inputOutline">
+                    <input id="textInput" class="input responsive-column" placeholder="請輸入訊息" type="text"
+                    onkeydown="inputKeyDown(event, this)" >
+                    <i class="fa fa-paper-plane send" aria-hidden="true"></i>
+                </label>
+                </div>
+            </div>
+        </div>
+        <script src="<%= `/backend/projects/${ projectId }/preview/js/conversation.js` %>" defer></script>
+        <script src="<%= `/backend/projects/${ projectId }/preview/js/types.js` %>" defer></script>
+    </body>
+</html>

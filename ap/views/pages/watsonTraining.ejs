@@ -1,0 +1,197 @@
+<% layout('../layouts/noLayout') -%>
+<% script(`/backend/static/js/features/watsonTraining.js`) -%>
+<% script(`/backend/static/plugin/selectize/selectize.js`) -%>
+<% stylesheet(`/backend/static/plugin/selectize/selectize.css`) -%>
+
+<div tab="watsonTraining">
+    <div class="container-fluid">
+        <div class="form-group form-group-marginless mb-3 pt-4">
+            <h3>AI訓練 <small class="text-muted">編輯 watson 內容</small></h3>
+        </div>
+        <div class="my-4">
+            <div class="d-flex">
+                <div class="training_list w-50 mr-2" content="intent">
+                    <div class="d-flex rounded shadow-sm bg_yellow_dark px-3 py-3">
+                        <span class="badge bg_white_light text_grey_dark">Intent</span>
+                        <div class="input-group input-group-sm ml-3">
+                            <select id="intent_selector" class="form-control form-control-sm"> </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="intent_name_edit"><i class="fas fa-pen fa-fw text_white"></i></button>
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="intent_remove"><i class="fas fa-trash-alt fa-fw text_white"></i></button>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm ml-3 d-none">
+                            <input id="intent_name_input" type="text" class="form-control" placeholder="" aria-label="intent"
+                                aria-describedby="button-addon">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="intent_name_submit"><i class="fas fa-check fa-fw text_white"></i></button>
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="intent_name_cancel"><i class="fas fa-times fa-fw text_white"></i></button>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm nowrap bg_blue text_white ml-3" type="button"
+                            data-toggle="tooltip" data-placement="top" title="新增 Intent"
+                            id="intent_add"><i class="fas fa-plus fa-fw"></i></button>
+                        <button class="btn btn-sm nowrap bg_blue text_white ml-3" type="file"
+                            data-toggle="tooltip" data-placement="top" title="上傳 csv"
+                            id="intent_import"><i class="fas fa-upload fa-fw"></i></button>
+                        <input id='intent_file' type='file' accept=".csv" hidden/>
+                    </div>
+                    <div class="overflow-auto">
+                        <ol class="training_list_body" content="examples" style="background: cornsilk;">
+                        </ol>
+                    </div>
+                </div>
+                <div class="training_list w-50 ml-2" content="entity">
+                    <div class="d-flex rounded shadow-sm bg_teal_dark px-3 py-3">
+                        <span class="badge bg_white_light text_grey_dark">Entities</span>
+                        <div class="input-group input-group-sm ml-3">
+                            <select id="entity_selector" class="form-control form-control-sm"> </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="entity_name_edit"><i class="fas fa-pen fa-fw text_white"></i></button>
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="entity_remove"><i class="fas fa-trash-alt fa-fw text_white"></i></button>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm ml-3 d-none">
+                            <input id="entity_name_input" type="text" class="form-control" placeholder="" aria-label="entity"
+                                aria-describedby="button-addon">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="entity_name_submit"><i class="fas fa-check fa-fw text_white"></i></button>
+                                <button class="btn btn-sm nowrap bg_blue" type="button"
+                                    id="entity_name_cancel"><i class="fas fa-times fa-fw text_white"></i></button>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm nowrap bg_blue text_white ml-3" type="button"
+                            id="entity_add"><i class="fas fa-plus fa-fw"></i></button>
+                        <button class="btn btn-sm nowrap bg_blue text_white ml-3" type="file"
+                            data-toggle="tooltip" data-placement="top" title="上傳 csv"
+                            id="entity_import"><i class="fas fa-upload fa-fw"></i></button>
+                        <input id='entity_file' type='file' accept=".csv" hidden/>
+                    </div>
+                    <div class="overflow-auto">
+                        <ol class="training_list_body" content="values" style="background: lightcyan;">
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addIntentEntity" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">新增</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div class="form-group" id="new_intent">
+                    <label class="col-form-label">New Intent:</label>
+                    <input type="text" class="form-control" id="new_intent_input">
+                </div>
+                <div class="form-group" id="new_entity">
+                    <label class="col-form-label">New Entity:</label>
+                    <input type="text" class="form-control" id="new_entity_input">
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button type="button" class="btn btn-secondary" data-toggle="sidebar">取消</button>
+                <button type="button" class="btn btn-primary" id="submit_add_intent">建立</button>
+                <button type="button" class="btn btn-primary" id="submit_add_entity">建立</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editValueAndSynonyms" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">編輯 Value</h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Value: </span>
+                    </div>
+                    <input type="text" class="form-control" id="edited_value" disabled>
+                </div>
+                <hr>
+                <div class="input-group input-group-sm mb-3 w-50">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">新增同義字 </span>
+                    </div>
+                    <input type="text" class="form-control" id="new_synonym">
+                    <div class="input-group-append">
+                        <button class="btn btn-sm nowrap bg_blue" type="button"
+                            id="add_synonym"><i class="fas fa-plus fa-fw text_white"></i></button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row" id="synonyms">
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button type="button" class="btn btn-secondary" data-toggle="sidebar">關閉</button>
+                <button type="button" class="btn btn-primary" id="submit_edit_value">儲存</button>
+            </div>
+        </div>
+    </div>
+    
+	<!-- import intent or entity -->
+    <div id="importData" class="sidebar sidebar-md" data-role="sidebar">
+        <div class="sky"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 class="mb-0">匯入<span id="importTarget"></span></h3>
+                <div class="dismiss" data-toggle="sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-body">
+                <ul class="nav nav-tabs mb-2" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">選擇檔案</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="paste-tab" data-toggle="tab" href="#paste" role="tab" aria-controls="paste" aria-selected="false">貼上文本</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputFilePrepend">上傳檔案</span>
+                            </div>
+                            <div class="custom-file">
+                                <input id="intent_file" type="file" class="custom-file-input" accept=".csv" aria-describedby="inputFilePrepend">
+                                <label class="custom-file-label" for="intent_file">.csv</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="paste" role="tabpanel" aria-labelledby="paste-tab">
+                        <textarea class="form-control mt-2" placeholder='請貼上' style="resize: none; height: calc(80vh - 10rem);"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button type="button" class="btn btn-secondary" data-toggle="sidebar">取消</button>
+                <button type="button" class="btn btn-primary" id="submit_import">匯入</button>
+            </div>
+        </div>
+    </div>
+    
+</div>

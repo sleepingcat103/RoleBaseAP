@@ -1,0 +1,41 @@
+<nav class="sb-sidenav accordion sb-sidenav-dark">
+  
+  <div class="input-group px-2 py-4" style="border-bottom: 1px solid #4e4e4e;">
+    <div class="input-group-prepend">
+      <label class="input-group-text">專案</label>
+    </div>
+    <select class="custom-select">
+      <option disabled>請選擇</option>
+      <% authorities.forEach(function(authority, index) { %>
+        <option 
+          <%= index === 0 ? 'selected' : '' %>
+          value="<%= index %>"
+          projectId="<%= authority.PROJECT_ID %>">
+          <%= authority.PROJECT_NAME %>
+        </option>
+      <% }) %> 
+    </select>
+  </div>
+
+  <% authorities.forEach(function(authority, index) { %>
+    <div 
+      class="sb-sidenav-menu <%= index === 0 ? '' : 'd-none' %>"
+      projectId="<%= authority.PROJECT_ID %>"
+      style="height: 0px;">
+
+      <div class="nav">
+        <% authority.ACCESS_RIGHT.forEach(function(right) { %>
+          <a class="nav-link" featureId="<%= right["FEATURE_ID"] || right["FEATURE.FEATURE_ID"] %>">
+              <div class="sb-nav-link-icon"><i class="fas fa-chevron-right"></i></div><%= right["FEATURE_NAME"] || right["FEATURE.FEATURE_NAME"] %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  <% }) %>
+
+  <div class="sb-sidenav-footer">
+    <div class="my-2 mx-3">
+      Yor are <%= authorities[0].ROLE_NAME %>
+    </div>
+  </div>
+</nav>

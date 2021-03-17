@@ -1,0 +1,249 @@
+const mainController = (function() {
+    
+    let haveInit;
+    let _projectId, _featureId, assistantConfig = {};
+    let $redirect = $('#redirect');
+    let $sidebar = $('section#layoutSidenav_nav');
+    let $content = $('section#layoutSidenav_content');
+    let $sidebarToggle = $('#sidebarToggle');
+    let $logout = $('#logout');
+    let $mainPage = $('.main-page');
+    let $previewSidebar = $('#preview')
+
+    const BG_ACTIVE_CLASS = 'bg_green_light';
+    const BG_INACTIVE_CLASS = 'bg_grey_light';
+    const BG_EDITING_CLASS = 'bg_blue_light';
+
+    // 每次搜尋數
+    const pageLimit = 500;
+    
+    // 初始化頁面動作
+    function __init__() {
+        
+        // 功能列收合
+        $sidebarToggle.on('click', e => {
+            $sidebar.toggleClass('active');
+            // $sidebar.find('.input-group').toggleClass('d-none')
+            $content.toggleClass('active');
+        });
+    
+        // 切換環境
+        $sidebar.find('select').on('change', e => {
+            let $target = $(e.currentTarget);
+            let projectId = $target.find('option:selected').attr('projectId');
+            let $nowMenu = $sidebar.find(`.sb-sidenav-menu[projectId="${ projectId }"]`);
+
+            _projectId = projectId;
+    
+            $sidebar.find('.sb-sidenav-menu').addClass('d-none');
+            $nowMenu.removeClass('d-none');
+            
+            let redirectfeatureId = $redirect.attr('featureId');
+            $redirect.removeAttr('featureId');
+            
+            if(redirectfeatureId) {
+                let $targetNav = $nowMenu.find(`.nav-link[featureId=${ redirectfeatureId }]`);
+                $targetNav.trigger('click');
+            } else {
+                $nowMenu.find('.nav-link:first').trigger('click');
+            }
+        });
+
+        // 切換功能
+        $sidebar.on('click', '.nav-link:not(.active)', e => {
+            let $target = $(e.currentTarget);
+            let featureId = $(e.currentTarget).attr('featureId');
+
+            let redirectData = JSON.parse($redirect.val() || '{}');
+            $redirect.removeAttr('value');
+            $redirect.val('');
+
+            _featureId = featureId;
+            
+            $sidebar.find('.nav-link.active').removeClass('active');
+            $target.addClass('active');
+
+            $previewSidebar.removeClass('active');
+
+            changePage(`/${featureId}`, $mainPage, redirectData)
+            .catch(error => {
+                console.error(error);
+            })
+            
+        })
+        
+        // 登出
+        $logout.on('click', function(e) {
+            logout();
+        });
+
+        initPage();
+    }
+    function changeNavStatus(featureId) {
+        $sidebar.find('.nav-link.active').removeClass('active');
+        $sidebar.find(`[featureid="${ featureId }"]`).addClass('active');
+
+        $previewSidebar.removeClass('active');
+    }
+
+    // 初始化頁面資訊
+    function initPage() {
+        let redirectProjectId = $redirect.attr('projectId');
+        $redirect.removeAttr('projectId');
+
+        _projectId = redirectProjectId || $sidebar.find('select').find('option:selected').attr('projectId');
+        haveInit = true;
+
+        // trigger change projectId
+        $sidebar.find('select').trigger('change');
+
+        return 'ok';
+    }
+
+    // 登出動作
+    function logout() {
+        return callBackendAPI('/logout', 'POST', {})
+        .then(response => {
+            window.location = '/backend/login';
+        })
+        .catch(error => {
+            console.error('[logout fail]', error);
+        });
+    }
+    function getProjectId() {
+        return _projectId;
+    }
+    function getFeatureId() {
+        return _featureId;
+    }
+    function getPage(path, data) {
+
+        console.log('[get page]', path, data);
+
+        let maskId = tempMask('頁面跳轉中請稍後');
+        let headers = { asdiuvhai: 'akwelfhkwea' };
+        let params = '?' + new URLSearchParams({ 
+            projectId: getProjectId(),
+            ...data
+        }).toString();
+        return callBackend('/backend' + path + params, 'GET', undefined, headers)
+        .then(res => {
+            console.log('[success]', path);
+            return res;
+        })
+        .catch(err => {
+            console.log('[fail]', path, err);
+            let { status, desc } = err;
+            if(status == 401) {
+                tempMask('登入逾時，需要重新登入');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            }else if(status == 500) {
+                return Promise.reject({ msg: '連線異常，請稍後再試' });
+            }else{
+                return Promise.reject(desc);
+            }
+        })
+        .finally(() => {
+            removeMask(maskId);
+        })
+        
+    }
+    function changePage(path, target, data) {
+        let $target;
+        if(typeof(target) === 'string') {
+            $target = $(target);
+        }else{
+            $target = target || $mainPage;
+        }
+        return getPage(path, data)
+        .then(page => {
+            $target.html(page);
+        })
+    }
+
+    function rollingSearch(searchParam, searchFunc, searchHandler) {
+        searchParam.limit = searchParam.limit || pageLimit;
+        searchParam.offset = searchParam.offset || 0;
+
+        return searchFunc(searchParam)
+        .then(response => {
+            searchHandler(response);
+            
+            if(searchParam.offset) {
+                searchParam.offset += pageLimit;
+                return rollingSearch(searchParam, searchFunc, searchHandler);
+            }
+        })
+    }
+
+    async function getAssistantConfig() {
+        let body = {
+            projectId: getProjectId()
+        }
+        if(assistantConfig[body.projectId]) {
+            return assistantConfig[body.projectId];
+        } else {
+            return callBackendAPI('/getWatsonConfig', 'POST', body)
+            .then(response => {
+                assistantConfig[body.projectId] = response;
+                return response;
+            })
+        }
+    }
+    function getBgClassByActive(active) {
+        if(active) {
+            return BG_ACTIVE_CLASS;
+        } else {
+            return BG_INACTIVE_CLASS;
+        }
+    }
+    function newPage(path) {
+        window.open(`${ window.location.origin }${ window.location.pathname }/newPage${ path }`)
+    }
+    function location(url) {
+        window.location = url;   
+    }
+    function preview(message) {
+        let projectId = getProjectId();
+
+        let iframe = $previewSidebar.find('iframe')[0];
+        iframe.onload = () => { iframe.contentWindow.displayMessage(message); }
+        let params = new URLSearchParams({ projectId }).toString();
+        iframe.src = `/backend/preview?${ params }`;
+        $previewSidebar.addClass('active');
+    }
+
+    __init__();
+
+    return {
+        haveInit,
+        pageLimit,
+        
+        color: {
+            active: BG_ACTIVE_CLASS,
+            inactive: BG_INACTIVE_CLASS,
+            editing: BG_EDITING_CLASS
+        },
+        
+        initPage,
+        getPage,
+        changePage,
+        changeNavStatus,
+        location,
+        newPage,
+        preview,
+        
+        logout,
+
+        getProjectId,
+        getFeatureId,
+
+        getAssistantConfig,
+        getBgClassByActive,
+
+        rollingSearch,
+    }
+
+})();
