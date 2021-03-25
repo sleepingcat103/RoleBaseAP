@@ -47,7 +47,7 @@
     "rotating-file-stream": "^2.1.5",
     "sequelize": "^5.22.4",
     "tedious": "^6.7.0",
-    "typedi": "^0.8.0",
+    "typedi": "^0.10.0",
     "xml2js": "^0.4.23",
     "xss": "^1.0.6"
   },
