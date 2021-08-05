@@ -36,7 +36,7 @@
     "form-data": "^4.0.0",
     "helmet": "^4.5.0",
     "http-errors": "^1.8.0",
-    "ibm-watson": "^5.7.3",
+    "ibm-watson": "^6.0.0",
     "ldapjs-client": "^0.1.1",
     "moment": "^2.25.3",
     "morgan": "^1.10.0",
@@ -46,7 +46,7 @@
     "pretty-checkbox": "^3.0.3",
     "rotating-file-stream": "^2.1.5",
     "sequelize": "^6.6.5",
-    "tedious": "^6.7.0",
+    "tedious": "^6.7.1",
     "typedi": "^0.8.0",
     "xml2js": "^0.4.23",
     "xss": "^1.0.6"
