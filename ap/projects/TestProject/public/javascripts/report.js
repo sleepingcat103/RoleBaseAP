@@ -71,7 +71,11 @@ var reportController = function () {
     $download.on('click', function (e) {
       var no = $tab.find('#myTab a.active').attr('no');
       var handler = [interactions, chats, questionRank, answerRank][no];
-      DownloadGreatCSV(handler.$, handler.name); // let header = handler.datatable.columns().header().toArray().map(th => $(th).text())
+      var header = $(handler.datatable.table().header()).find('th').toArray().map(function (th) {
+        return $(th).text();
+      });
+      var content = handler.datatable.rows().data().toArray();
+      DownloadGreatArray([header].concat(content), handler.name); // let header = handler.datatable.columns().header().toArray().map(th => $(th).text())
       // let data = [header].concat(handler.datatable.rows().data().toArray());
       // let sheet = XLSX.utils.aoa_to_sheet(data);
       // openDownloadDialog(sheet2blob(sheet), handler.name + '.xlsx');

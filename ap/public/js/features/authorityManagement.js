@@ -160,7 +160,7 @@ var authorityManagementController = function () {
 
   function initPage() {
     // get data
-    // 取得所有用戶組與使用者列表
+    // 取得所有身分組與使用者列表
     var requests = function () {
       var body = {
         projectId: mainController.getProjectId()

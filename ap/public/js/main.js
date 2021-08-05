@@ -1,5 +1,11 @@
 "use strict";
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -28,7 +34,18 @@ var mainController = function () {
   var BG_INACTIVE_CLASS = 'bg_grey_light';
   var BG_EDITING_CLASS = 'bg_blue_light'; // 每次搜尋數
 
-  var pageLimit = 500; // 初始化頁面動作
+  var pageLimit = 500; // 替換字串設定
+
+  var replaceConfig = {
+    data: {
+      name: /[$][{]domain_data[}]/g,
+      value: "https://hqsaplu83.hotains.com.tw/file/helpdesk/document"
+    },
+    img: {
+      name: /[$][{]domain_img[}]/g,
+      value: "https://hqsaplu83.hotains.com.tw/file/helpdesk/image"
+    }
+  }; // 初始化頁面動作
 
   function __init__() {
     // 功能列收合
@@ -43,6 +60,10 @@ var mainController = function () {
       var projectId = $target.find('option:selected').attr('projectId');
       var $nowMenu = $sidebar.find(".sb-sidenav-menu[projectId=\"".concat(projectId, "\"]"));
       _projectId = projectId;
+      callBackendAPI('/setSession', 'POST', {
+        key: 'projectId',
+        value: projectId
+      })["catch"](function (e) {});
       $sidebar.find('.sb-sidenav-menu').addClass('d-none');
       $nowMenu.removeClass('d-none');
       var redirectfeatureId = $redirect.attr('featureId');
@@ -63,6 +84,10 @@ var mainController = function () {
       $redirect.removeAttr('value');
       $redirect.val('');
       _featureId = featureId;
+      callBackendAPI('/setSession', 'POST', {
+        key: 'featureId',
+        value: featureId
+      })["catch"](function (e) {});
       $sidebar.find('.nav-link.active').removeClass('active');
       $target.addClass('active');
       $previewSidebar.removeClass('active');
@@ -87,10 +112,16 @@ var mainController = function () {
   function initPage() {
     var redirectProjectId = $redirect.attr('projectId');
     $redirect.removeAttr('projectId');
-    _projectId = redirectProjectId || $sidebar.find('select').find('option:selected').attr('projectId');
-    haveInit = true; // trigger change projectId
+
+    if (redirectProjectId) {
+      $sidebar.find('select').val(redirectProjectId);
+    } else {
+      _projectId = $sidebar.find('select').find('option:selected').attr('projectId');
+    }
 
     $sidebar.find('select').trigger('change');
+    haveInit = true; // trigger change projectId
+
     return 'ok';
   } // 登出動作
 
@@ -131,7 +162,7 @@ var mainController = function () {
       if (status == 401) {
         tempMask('登入逾時，需要重新登入');
         setTimeout(function () {
-          window.location.reload();
+          window.location = '/backend/login';
         }, 2000);
       } else if (status == 500) {
         return Promise.reject({
@@ -165,7 +196,7 @@ var mainController = function () {
     return searchFunc(searchParam).then(function (response) {
       searchHandler(response);
 
-      if (searchParam.offset) {
+      if (response.length == pageLimit) {
         searchParam.offset += pageLimit;
         return rollingSearch(searchParam, searchFunc, searchHandler);
       }
@@ -227,7 +258,9 @@ var mainController = function () {
   }
 
   function preview(message) {
-    var projectId = getProjectId();
+    var projectId = getProjectId(); // 替換pattern
+
+    message = JSON.parse(replacePatterns(JSON.stringify(message)));
     var iframe = $previewSidebar.find('iframe')[0];
 
     iframe.onload = function () {
@@ -239,6 +272,74 @@ var mainController = function () {
     }).toString();
     iframe.src = "/backend/preview?".concat(params);
     $previewSidebar.addClass('active');
+  } // 替換網址中pattern供預覽使用
+
+
+  function replacePatterns(text, target) {
+    var targetConfigs; // 傳入目標為字串?
+
+    if (target && typeof target == 'string') {
+      targetConfigs = [replaceConfig[target]]; // 傳入目標為陣列
+    } else if (target && Array.isArray(target) && target.length > 0) {
+      targetConfigs = Object.keys(replaceConfig).filter(function (configType) {
+        return target.indexOf(configType) > -1;
+      }).map(function (configType) {
+        return replaceConfig[configType];
+      }); // 無目標
+    } else {
+      targetConfigs = Object.values(replaceConfig);
+    }
+
+    var _iterator = _createForOfIteratorHelper(targetConfigs),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var config = _step.value;
+        var regExp = new RegExp(config.name);
+        text = text.replace(regExp, config.value);
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+
+    return text;
+  } // 替換網址為pattern以存入資料庫
+
+
+  function toPatterns(text, target) {
+    var targetConfigs; // 傳入目標為字串?
+
+    if (target && typeof target == 'string') {
+      targetConfigs = [replaceConfig[target]]; // 傳入目標為陣列
+    } else if (target && Array.isArray(target) && target.length > 0) {
+      targetConfigs = Object.keys(replaceConfig).filter(function (configType) {
+        return target.indexOf(configType) > -1;
+      }).map(function (configType) {
+        return replaceConfig[configType];
+      }); // 無目標
+    } else {
+      targetConfigs = Object.values(replaceConfig);
+    }
+
+    var _iterator2 = _createForOfIteratorHelper(targetConfigs),
+        _step2;
+
+    try {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+        var config = _step2.value;
+        var regExp = new RegExp(config.value);
+        text = text.replace(regExp, config.name);
+      }
+    } catch (err) {
+      _iterator2.e(err);
+    } finally {
+      _iterator2.f();
+    }
+
+    return text;
   }
 
   __init__();
@@ -261,6 +362,8 @@ var mainController = function () {
     logout: logout,
     getProjectId: getProjectId,
     getFeatureId: getFeatureId,
+    replacePatterns: replacePatterns,
+    toPatterns: toPatterns,
     getAssistantConfig: getAssistantConfig,
     getBgClassByActive: getBgClassByActive,
     rollingSearch: rollingSearch

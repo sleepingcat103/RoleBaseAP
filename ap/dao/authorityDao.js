@@ -111,8 +111,14 @@ module.exports = class {
             },
             include: [{
                 model: this.sqlConfig.USER,
+                where: {
+                    "ACTIVE": 1,
+                },
             }, {
                 model: this.sqlConfig.PROJECT,
+                where: {
+                    "ACTIVE": 1,
+                },
             }, {
                 model: this.sqlConfig.ROLE,
             }]

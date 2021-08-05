@@ -8,7 +8,8 @@ router.get('*', function(req, res, next) {
     let session = req.session;
     let loginUser = xss(session.loginUser);
 
-    if('/login' != req._parsedUrl.path && !loginUser){
+    if('/login' != req._parsedUrl.path && !loginUser) {
+        req.session.redirect = true;
         res.redirect('/backend/login');
         return;
     }
@@ -18,10 +19,11 @@ router.get('*', function(req, res, next) {
 
 // 登入
 router.get('/login', function(req, res, next) {
-    if(xss(req.session.loginUser)){
+    let redirect = xss(req.session.redirect);
+    if(xss(req.session.loginUser)) {
         res.redirect('/backend');
-    }else{
-        res.status(401).render('pages/login');
+    } else {
+        res.status(redirect ? 401 : 200).render('pages/login');
     }
 });
 
@@ -38,6 +40,8 @@ router.get('/', function(req, res, next) {
     if(!authorities) {
         return res.render('pages/error');
     }
+
+    console.log(projectId, featureId)
 
     res.render('pages/main', { 
         // data: {},

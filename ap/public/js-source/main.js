@@ -16,6 +16,18 @@ const mainController = (function() {
 
     // 每次搜尋數
     const pageLimit = 500;
+
+    // 替換字串設定
+    let replaceConfig = {
+        data: {
+            name: /[$][{]domain_data[}]/g,
+            value:"https://hqsaplu83.hotains.com.tw/file/helpdesk/document"
+        },
+        img: {
+            name: /[$][{]domain_img[}]/g,
+            value:"https://hqsaplu83.hotains.com.tw/file/helpdesk/image"
+        }
+    }
     
     // 初始化頁面動作
     function __init__() {
@@ -34,6 +46,7 @@ const mainController = (function() {
             let $nowMenu = $sidebar.find(`.sb-sidenav-menu[projectId="${ projectId }"]`);
 
             _projectId = projectId;
+            callBackendAPI('/setSession', 'POST', { key: 'projectId', value: projectId }).catch(e => {})
     
             $sidebar.find('.sb-sidenav-menu').addClass('d-none');
             $nowMenu.removeClass('d-none');
@@ -59,6 +72,7 @@ const mainController = (function() {
             $redirect.val('');
 
             _featureId = featureId;
+            callBackendAPI('/setSession', 'POST', { key: 'featureId', value: featureId }).catch(e => {})
             
             $sidebar.find('.nav-link.active').removeClass('active');
             $target.addClass('active');
@@ -91,11 +105,16 @@ const mainController = (function() {
         let redirectProjectId = $redirect.attr('projectId');
         $redirect.removeAttr('projectId');
 
-        _projectId = redirectProjectId || $sidebar.find('select').find('option:selected').attr('projectId');
+        if(redirectProjectId) {
+            $sidebar.find('select').val(redirectProjectId);
+        } else {
+            _projectId = $sidebar.find('select').find('option:selected').attr('projectId');
+        }
+
+        $sidebar.find('select').trigger('change');
         haveInit = true;
 
         // trigger change projectId
-        $sidebar.find('select').trigger('change');
 
         return 'ok';
     }
@@ -137,7 +156,7 @@ const mainController = (function() {
             if(status == 401) {
                 tempMask('登入逾時，需要重新登入');
                 setTimeout(function() {
-                    window.location.reload();
+                    window.location = '/backend/login';
                 }, 2000);
             }else if(status == 500) {
                 return Promise.reject({ msg: '連線異常，請稍後再試' });
@@ -171,7 +190,7 @@ const mainController = (function() {
         .then(response => {
             searchHandler(response);
             
-            if(searchParam.offset) {
+            if(response.length == pageLimit) {
                 searchParam.offset += pageLimit;
                 return rollingSearch(searchParam, searchFunc, searchHandler);
             }
@@ -208,11 +227,66 @@ const mainController = (function() {
     function preview(message) {
         let projectId = getProjectId();
 
+        // 替換pattern
+        message = JSON.parse(replacePatterns(JSON.stringify( message )));
+
         let iframe = $previewSidebar.find('iframe')[0];
         iframe.onload = () => { iframe.contentWindow.displayMessage(message); }
         let params = new URLSearchParams({ projectId }).toString();
         iframe.src = `/backend/preview?${ params }`;
         $previewSidebar.addClass('active');
+    }
+
+    // 替換網址中pattern供預覽使用
+    function replacePatterns(text, target) {
+        let targetConfigs;
+        
+        // 傳入目標為字串?
+        if(target && typeof(target) == 'string') {
+            targetConfigs = [replaceConfig[target]];
+        
+        // 傳入目標為陣列
+        } else if(target && Array.isArray(target) && target.length > 0) {
+            targetConfigs = Object.keys(replaceConfig).filter(configType => {
+                return target.indexOf(configType) > -1;
+            }).map(configType => replaceConfig[configType] );
+        
+        // 無目標
+        } else {
+            targetConfigs = Object.values(replaceConfig);
+        }
+        for(let config of targetConfigs) {
+            let regExp = new RegExp(config.name);
+            text = text.replace(regExp, config.value);
+        }
+    
+        return text;
+    }
+    // 替換網址為pattern以存入資料庫
+    function toPatterns(text, target) {
+        let targetConfigs;
+        
+        // 傳入目標為字串?
+        if(target && typeof(target) == 'string') {
+            targetConfigs = [replaceConfig[target]];
+        
+        // 傳入目標為陣列
+        } else if(target && Array.isArray(target) && target.length > 0) {
+            targetConfigs = Object.keys(replaceConfig).filter(configType => {
+                return target.indexOf(configType) > -1;
+            }).map(configType => replaceConfig[configType] );
+        
+        // 無目標
+        } else {
+            targetConfigs = Object.values(replaceConfig);
+        }
+
+        for(let config of targetConfigs) {
+            let regExp = new RegExp(config.value);
+            text = text.replace(regExp, config.name);
+        }
+    
+        return text;
     }
 
     __init__();
@@ -228,17 +302,20 @@ const mainController = (function() {
         },
         
         initPage,
+        
         getPage,
         changePage,
         changeNavStatus,
         location,
         newPage,
         preview,
-        
+
         logout,
 
         getProjectId,
         getFeatureId,
+        replacePatterns,
+        toPatterns,
 
         getAssistantConfig,
         getBgClassByActive,

@@ -103,7 +103,11 @@ var userCommentController = (function() {
         })
         // 下載按鈕
         $download.on('click', e => {
-            DownloadGreatCSV($tab.find('table'), '意見回覆');
+
+            let header = $(userCommentDatatable.table().header()).find('th').toArray().map(th => $(th).text());
+            let content = userCommentDatatable.rows().data().toArray();
+
+            DownloadGreatArray([header].concat(content), '意見回覆');
 
             // let header = userCommentDatatable.columns().header().toArray().map(th => $(th).text())
             // let data = [header].concat(userCommentDatatable.rows().data().toArray());

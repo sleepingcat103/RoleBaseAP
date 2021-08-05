@@ -22,6 +22,8 @@ router.use('/*', function(req, res, next) {
 router.post('/login', BackendService.login);
 router.post('/logout', BackendService.logout);
 
+router.post('/setSession', BackendService.setSession);
+
 router.post('/listUsersByProjectId', BackendService.listUsersByProjectId);
 router.get('/listUsers', BackendService.listUsers);
 router.get('/listAdminUsers', BackendService.listAdminUsers);

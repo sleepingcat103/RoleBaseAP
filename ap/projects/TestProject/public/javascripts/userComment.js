@@ -96,7 +96,11 @@ var userCommentController = function () {
     }); // 下載按鈕
 
     $download.on('click', function (e) {
-      DownloadGreatCSV($tab.find('table'), '意見回覆'); // let header = userCommentDatatable.columns().header().toArray().map(th => $(th).text())
+      var header = $(userCommentDatatable.table().header()).find('th').toArray().map(function (th) {
+        return $(th).text();
+      });
+      var content = userCommentDatatable.rows().data().toArray();
+      DownloadGreatArray([header].concat(content), '意見回覆'); // let header = userCommentDatatable.columns().header().toArray().map(th => $(th).text())
       // let data = [header].concat(userCommentDatatable.rows().data().toArray());
       // let sheet = XLSX.utils.aoa_to_sheet(data);
       // openDownloadDialog(sheet2blob(sheet), '意見回覆' + '.xlsx');

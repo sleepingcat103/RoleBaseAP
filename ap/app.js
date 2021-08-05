@@ -45,21 +45,15 @@ app.use(cors(config.corsOptions));
 app.use(session(config.sessionOption));
 
 
-app.use('/backend/projects', express.static('projects', {
-  setHeaders: (res, path) => {
-    res.setHeader('Cache-control', 'max-age=31536000');
-  }
-}));
-app.use('/backend/static', express.static('public', {
-  setHeaders: (res, path) => {
-    res.setHeader('Cache-control', 'max-age=31536000');
-  }
-}));
-app.use('/backend/packages', express.static('node_modules', {
-  setHeaders: (res, path) => {
-    res.setHeader('Cache-control', 'max-age=31536000');
-  }
-}));
+app.use('/backend/projects', express.static('projects'));
+app.use('/backend/static', express.static('public'));
+app.use('/backend/packages', express.static('node_modules'));
+
+// , {
+//   setHeaders: (res, path) => {
+//     res.setHeader('Cache-control', 'max-age=31536000');
+//   }
+// }
 
 const backendPagesRouter = require('./routes/backendPages');
 app.use('/backend', backendPagesRouter);

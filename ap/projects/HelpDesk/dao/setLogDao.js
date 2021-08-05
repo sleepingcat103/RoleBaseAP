@@ -49,5 +49,14 @@ module.exports = class {
 
         return this.sqlConfig.SET_LOG.findAll(findObj);
     }
+    // insertSetLog() {
+    //     let row = {
+    //         USER_TYPE: "text",
+    //         USER_SESSION: "USER_SESSION",
+    //         USER_SAY: "hi",
+    //         ANSWER_ID: "AA-123"
+    //     }
+    //     this.sqlConfig.SET_LOG.create(row);
+    // }
 
 }

@@ -119,7 +119,8 @@ function secondsToTime(ss) {
 
 // DB時區問題，減八小時來顯示
 function localeTimeTW(time) {
-    return new Date(new Date(time).getTime() - 8 * 60 * 60 * 1000).toLocaleString('zh-Hans-TW');
+    return dayjs(new Date(time).getTime() - 8 * 60 * 60 * 1000).format('YYYY/MM/DD A hh:mm:ss');
+    // return new Date(new Date(time).getTime() - 8 * 60 * 60 * 1000).toLocaleString('zh-Hans-TW');
 }
 
 /**
@@ -292,6 +293,24 @@ function deepCompare() {
 }
 
 // 下載CSV大檔
+function DownloadGreatArray(arr, filename) {
+	let myCSV = [], part = 0;
+
+	arr.forEach(row => {
+		row.map(text => {
+			return (text + '').replace(/\n/g, ' ').replace(/,/g, '，');
+		})
+		myCSV.push(row.join(','));
+
+		if(myCSV.length == 10000) {
+			DownloadCSV(myCSV.join('\n'), `${filename}-${++part}`);
+			myCSV = [];
+		}
+	})
+
+	DownloadCSV(myCSV.join('\n'), `${filename}${++part == 1 ? '' : `-${part}`}`);
+}
+
 function DownloadGreatCSV($selector, filename) {
 	let myCSV = [], part = 0;
 	
@@ -314,13 +333,19 @@ function DownloadGreatCSV($selector, filename) {
 
 // 下載csv
 function DownloadCSV(csvContent, tableTitle) {
-    console.log(csvContent, tableTitle)
+    // console.log(csvContent, tableTitle)
 	var blobdata = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
-	var link = document.createElement("a");
-	link.setAttribute("href", window.URL.createObjectURL(blobdata));
-	link.setAttribute("download", `${ tableTitle } ${new Date(Date.now() + 28800000).toISOString().replace('T', ' ').replace('Z', '') }.csv`);
+    let fileName = `${ tableTitle } ${new Date(Date.now() + 28800000).toISOString().replace('T', ' ').replace('Z', '') }.csv`;
 
-    link.click();
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) { // for IE
+        window.navigator.msSaveOrOpenBlob(blobdata, fileName);
+    } else {
+        var link = document.createElement("a");
+        link.setAttribute("href", window.URL.createObjectURL(blobdata));
+        link.setAttribute("download", fileName);
+    
+        link.click();
+    }
 }
 // 下載 excel 需搭配 xlsx.full.js
 function openDownloadDialog(url, saveName) {

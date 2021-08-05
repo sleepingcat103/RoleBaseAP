@@ -316,14 +316,25 @@ var answerPackController = (function() {
                 $container.find('[field="value-mailto"]').hide();
 
                 if($target.val() == 'download') {
-                    $container.find('[field="value-download"]').show();
+                    $container.find('[field="select-file"]').show();
                 } else {
-                    $container.find('[field="value-download"]').hide();
+                    $container.find('[field="select-file"]').hide();
                 }
             }
         })
         // 選擇檔案
-        $editArea.on('click', '[field="value-download"] button', e => {
+        $editArea.on('click', '[field="select-file"] button', e => {
+            let target = $(e.currentTarget).attr('target');
+
+            console.log(e, target);
+
+            if(target == 'document') {
+                $mediaFiles.find('button').attr('disabled', true);
+            } else if(target == 'media') {
+                $documentFiles.find('button').attr('disabled', true);
+            } else {
+                $fileSystemSidebar.find('button').attr('disabled', false);
+            }
             $fileSystemSidebar.toggleClass('active');
             $fileSystemSidebar.attr('targetCardId', $(e.currentTarget).closest('.card').attr('id'));
             $fileSystemSidebar.attr('targetContent', $(e.currentTarget).closest('.input-group').find('input').attr('content'));
@@ -406,13 +417,14 @@ var answerPackController = (function() {
         .then(response => {
             $answerpacksField.html(response.map(answerpack => {
                 return buildAnswerpackButtons(answerpack);
-            }).join(''))
+            }).join(''));
         })
         .then(() => {
             let ansId = $searchAnswerpackInput.val();
-            let target = $answerpacksField.find('button').toArray().find(btn => {
+            let target = $answerpacksField.find('div[content="answerpack"]').toArray().find(btn => {
                 if(ansId == $(btn).text().trim()) return true;
             })
+            console.log(ansId, target);
             if(target) $(target).trigger('click');
             $searchAnswerpackInput.trigger('change');
 
@@ -525,7 +537,7 @@ var answerPackController = (function() {
                 return `
                 <li>
                     <div>
-                        <button type="button" class="btn btn-sm btn-outline-info" action="selectFile" filePath="${ file.filePath }">
+                        <button type="button" class="btn btn-sm btn-outline-info" action="selectFile" filePath="${ mainController.toPatterns(file.filePath) }">
                             <i class="fas fa-check"></i>
                         </button>
                         ${ file.fileName }
@@ -551,7 +563,7 @@ var answerPackController = (function() {
                 return `
                 <li>
                     <div>
-                        <button type="button" class="btn btn-sm btn-outline-info" action="selectFile" filePath="${ file.filePath }">
+                        <button type="button" class="btn btn-sm btn-outline-info" action="selectFile" filePath="${ mainController.toPatterns(file.filePath) }">
                             <i class="fas fa-check"></i>
                         </button>
                         ${ file.fileName }
@@ -648,10 +660,24 @@ var answerPackController = (function() {
                     </div>
                     <div class="input-group input-group-sm mb-2">
                         <div class="input-group-prepend">
+                            <span class="input-group-text">值</span>
+                        </div>
+                        <input content="image_block_source" type="text" class="form-control col" placeholder="" value="${ msg.source || '' }">
+                        <div class="input-group-append" field="select-file">
+                            <button class="btn btn-outline-secondary" type="button" target="media">瀏覽</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 原本做法，改成選擇檔案 -->
+                    <!--
+                    <div class="input-group input-group-sm mb-2">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">圖片位址</span>
                         </div>
                         <input content="image_block_source" type="text" class="form-control col" placeholder="" value="${ msg.source || '' }">
                     </div>
+                    -->
+
                 </div>
             </div>
         </div>`;
@@ -724,9 +750,12 @@ var answerPackController = (function() {
                 <div class="card-body">
                     <div class="input-group input-group-sm mb-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">圖片位址</span>
+                            <span class="input-group-text">值</span>
                         </div>
-                        <input content="card_block_picSrc" type="text" class="form-control col" placeholder="" value="${ msg.card.picSrc || '' }">
+                        <input content="card_block_picSrc" type="text" class="form-control col" placeholder="" value="${ msg.source || '' }">
+                        <div class="input-group-append" field="select-file">
+                            <button class="btn btn-outline-secondary" type="button" target="media">瀏覽</button>
+                        </div>
                     </div>
                     <div class="input-group input-group-sm mb-2">
                         <div class="input-group-prepend">
@@ -836,7 +865,7 @@ var answerPackController = (function() {
                                 <span class="input-group-text">值</span>
                             </div>
                             <input content="button_block_value" type="text" class="form-control col" placeholder="" value="${ msg.btnValue || '' }">
-                            <div class="input-group-append" field="value-download" ${ type == 'download' ? '' : 'style="display: none;"' }>
+                            <div class="input-group-append" field="select-file" ${ type == 'download' ? '' : 'style="display: none;"' }>
                                 <button class="btn btn-outline-secondary" type="button">瀏覽</button>
                             </div>
                         </div>

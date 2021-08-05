@@ -24,10 +24,10 @@ var reportController = (function() {
     // 初始化頁面動作
     function __init__() {
         // datatable
-        interactions.datatable = interactions.$.DataTable(datatableConfig);
-        chats.datatable = chats.$.DataTable(datatableConfig);
-        questionRank.datatable = questionRank.$.DataTable(datatableConfig);
-        answerRank.datatable = answerRank.$.DataTable(datatableConfig);
+        interactions.datatable = interactions.$.DataTable(Object.assign(datatableConfig, { "order": [[ 0, "asc" ]] }));
+        chats.datatable = chats.$.DataTable(Object.assign(datatableConfig, { "order": [[ 0, "asc" ]] }));
+        questionRank.datatable = questionRank.$.DataTable(Object.assign(datatableConfig, { "order": [[ 5, "desc" ]] }));
+        answerRank.datatable = answerRank.$.DataTable(Object.assign(datatableConfig, { "order": [[ 2, "desc" ]] }));
 
         // 篩選信心功能
         $(chats.datatable.table().container()).on('click focus', '#chatsFilterIntent', e => {
@@ -82,9 +82,12 @@ var reportController = (function() {
         // 下載按鈕
         $download.on('click', e => {
             let no = $tab.find('#myTab a.active').attr('no');
-            let handler = [interactions, chats, questionRank, answerRank][no];
+            let handler = [ interactions, chats, questionRank, answerRank ][no];
 
-            DownloadGreatCSV(handler.$, handler.name);
+            let header = $(handler.datatable.table().header()).find('th').toArray().map(th => $(th).text());
+            let content = handler.datatable.rows().data().toArray();
+
+            DownloadGreatArray([header].concat(content), handler.name);
 
             // let header = handler.datatable.columns().header().toArray().map(th => $(th).text())
             // let data = [header].concat(handler.datatable.rows().data().toArray());
@@ -241,8 +244,9 @@ var reportController = (function() {
             return body;
         },
         doSearch: (body) => {
+            let sortedData = [];
+
             let searchHandler = (response) => {
-                let sortedData = []
                 response.filter(row => {
                     return row.USER_SAY.trim();
                 }).forEach(row => {
@@ -264,24 +268,20 @@ var reportController = (function() {
                         target.confidences.push(INTENT_CONFIDENCE)
                     }
                 })
-                
-                let rows = sortedData.sort((a, b) => {
-                    let A = a.action.button + a.action.text;
-                    let B = b.action.button + b.action.text;
-                    
-                    return A > b ? -1 : A < B ? -1 : 0;
-                }).map((row, index) => {
-                    let confidences = row.confidences.filter(c => c > 0);
-                    console.log('confidences', confidences)
-                    let averageConfidence = confidences.length == 0 ? 0 : (confidences.reduce((a, b) => a + b, 0) || 0) / confidences.length;
-
-                    return [ index+1, htmlEncode(row.text), row.intent, averageConfidence, row.action.button, row.action.text ]
-                })
-                
-                questionRank.datatable.rows.add(rows).draw();
             }
             
             return mainController.rollingSearch(body, findSetLog, searchHandler)
+            .then(() => {
+                let rows = sortedData.sort((a, b) => {
+                    return b.action.text - a.action.text;
+                }).map((row, index) => {
+                    let confidences = row.confidences.filter(c => c > 0);
+                    let averageConfidence = confidences.length == 0 ? 0 : (confidences.reduce((a, b) => a + b, 0) || 0) / confidences.length;
+
+                    return [ index+1, htmlEncode(row.text), row.intent, averageConfidence, row.action.button, row.action.text ];
+                })
+                questionRank.datatable.rows.add(rows).draw();
+            })
             .catch(error => { console.error(error); });
         }
     }
@@ -315,12 +315,14 @@ var reportController = (function() {
             return body;
         },
         doSearch: (body) => {
+            let sortedData = {};
+
             let searchHandler = (response) => {
-                
-                let sortedData = {}
                 response.forEach(row => {
                     let { ANSWER_ID, ANS_NAME, DETAIL } = row;
-
+                    // 過濾空值
+                    if(!ANSWER_ID || new RegExp(/^\s*$/g).test(ANSWER_ID)) return;
+                    
                     let target = sortedData.hasOwnProperty(ANSWER_ID);
                     if(!target) {
                         sortedData[ANSWER_ID] = {
@@ -333,20 +335,17 @@ var reportController = (function() {
                         sortedData[ANSWER_ID].count ++;
                     }
                 })
-                
-                let rows = Object.values(sortedData).sort((a, b) => {
-                    let A = a.count;
-                    let B = b.count;
-                    
-                    return A > b ? -1 : A < B ? -1 : 0;
-                }).map((row, index) => {
-                    return [ index+1, row.ansId, row.count, row.ansName, row.datail ]
-                })
-                
-                answerRank.datatable.rows.add(rows).draw();
             }
 
             return mainController.rollingSearch(body, findSetLog, searchHandler)
+            .then(() => {
+                let rows = Object.values(sortedData).sort((a, b) => {
+                    return b.count - a.count;
+                }).map((row, index) => {
+                    return [ index+1, row.ansId, row.count, row.ansName, row.datail ];
+                })
+                answerRank.datatable.rows.add(rows).draw();
+            })
             .catch(error => { console.error(error); });
         }
     }

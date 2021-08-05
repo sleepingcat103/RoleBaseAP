@@ -184,10 +184,10 @@ class BackendController {
         function normalLoginProcess (username) {
             return authorityDao.getAuthorityByUserId(username)
             .then(response => {
-                // console.log('[GET AUTHORITY]', username, JSON.stringify(response, null, 2));
+                console.log('[GET AUTHORITY]', username, JSON.stringify(response, null, 2));
                 
                 if(!response || response.length == 0) {
-                    return Promise.reject({ status: 400, msg: 'AP: 沒有被賦予專案角色' });
+                    return Promise.reject({ status: 400, msg: 'AP: 沒有被賦予專案角色，或帳號、專案已被停用' });
 
                 } else {
                     return Promise.all(response.filter(au => {
@@ -246,6 +246,18 @@ class BackendController {
         res.status(200).send({
             msg: `user logout`
         });
+    }
+
+    setSession(req, res, next) {
+        let { key, value } = req.body;
+
+        try {
+            req.session[key] = value;
+            res.status(200).send();
+        } catch(e) {
+            // console.log('[setSession error]', response);
+            res.status(500).send();
+        }
     }
 
     // 列出專案使用者
@@ -530,7 +542,7 @@ class BackendController {
         })
     }
 
-    // 新增用戶組
+    // 新增身分組
     insertRole(req, res, next) {
         // let { roleId, roleName } = req.body;
 
@@ -560,7 +572,7 @@ class BackendController {
             }
         })
     }
-    // 刪除用戶組
+    // 刪除身分組
     deleteRole(req, res, next) {
         let { roleId } = req.body;
         
@@ -1697,7 +1709,7 @@ class BackendController {
         })
     }
     updateEntity(req, res, next) {
-        let { projectId, version, apikey, url, skillId, newEntity } = req.body;
+        let { projectId, version, apikey, url, skillId, entity, newEntity } = req.body;
         
         let params = {
             version: version,
@@ -1705,7 +1717,8 @@ class BackendController {
             url: url,
             data: {
                 workspaceId: skillId,
-                ...newEntity
+                entity,
+                newEntity
             }
         }
         

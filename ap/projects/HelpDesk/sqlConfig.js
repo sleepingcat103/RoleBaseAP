@@ -56,6 +56,7 @@ module.exports = class sqlConfig {
       {
         IDSETLOG: {
           type: Sequelize.INTEGER(18, 0),
+          autoIncrement: true,
           allowNull: false,
           primaryKey: true,
         },

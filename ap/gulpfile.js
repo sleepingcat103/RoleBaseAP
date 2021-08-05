@@ -3,9 +3,9 @@ const babel = require('gulp-babel');
 const del = require('del');
 
 gulp.task('clean', () => {
-    return del(['./public/js/**', 
-            './projects/HelpDesk/public/javascripts/**', 
-            './projects/TestProject/public/javascripts/**', 
+    return del(['./public/js/**',
+            './projects/HelpDesk/public/javascripts/**',
+            './projects/TestProject/public/javascripts/**',
             '!.gitkeep']);
 });
 

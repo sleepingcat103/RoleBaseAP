@@ -137,7 +137,7 @@ img {
   height: 27px;
   padding: 5px 0 0 22px;
   margin-top: 15px;
-  background: url('../../img/tooplate_button.png') no-repeat;
+  background: url('../img/tooplate_button.png') no-repeat;
   color: #fff;
   font-weight: bold;
   text-align: center;
@@ -145,7 +145,7 @@ img {
 }
 
 .button a:hover {
-  background: url('../../img/tooplate_button_hover.png') no-repeat;
+  background: url('../img/tooplate_button_hover.png') no-repeat;
 }
 
 /* end of main */
@@ -428,7 +428,7 @@ img {
   padding-right: 25px;
 }
 .from-watson.latest.top p:before {
-  content: url("../../img/logo.png");  /*向網頁增加新內容*/
+  content: url("../img/logo.png");  /*向網頁增加新內容*/
   background-size: 23px 33px;  /* 12/11 change */
   position: absolute;
   z-index: 1;
@@ -474,7 +474,7 @@ img {
 }
 
 .one.welcomeTop .welcome p:before {
-  content: url("../../img/logo.png");  /*向網頁增加新內容*/
+  content: url("../img/logo.png");  /*向網頁增加新內容*/
   background-size: 24px 28px;
   position: absolute;
   z-index: 1;
@@ -486,7 +486,7 @@ img {
   height: 90px;
   border: none;
   border-radius: 0;
-  background: url('../../img/Q4.png');
+  background: url('../img/Q4.png');
   background-position: 2px 3px;
   background-repeat:no-repeat;
   background-color: #fff;
@@ -510,7 +510,7 @@ img {
 .one.welcomeSub .welcome p .options-button:hover {
   border: none;
   border-radius: 0;
-  background: url('../../img/Q2.png');
+  background: url('../img/Q2.png');
   background-position: 2px 3px;
   background-repeat:no-repeat;
   background-color: #E5E5E5;
@@ -553,7 +553,7 @@ img {
   height: 90px;
   border: none;
   border-radius: 0;
-  background: url('../../img/Q4.png');
+  background: url('../img/Q4.png');
   background-position: 2px 3px;
   background-repeat:no-repeat;
   background-color: #fff;
@@ -656,7 +656,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/連結_0d0d0d icon.png"); 
+    background-image: url("../img/連結_0d0d0d icon.png"); 
     background-repeat: no-repeat;                                    
     background-position: bottom 5px right 4px;                       
     background-color: #D0D0D0;              
@@ -675,7 +675,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/連結_e60012 icon.png"); 
+    background-image: url("../img/連結_e60012 icon.png"); 
     background-repeat: no-repeat;                                    
     background-position: bottom 5px right 4px;                       
     background-color: #D0D0D0;
@@ -694,7 +694,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/下載_0d0d0d_icon.png"); 
+    background-image: url("../img/下載_0d0d0d_icon.png"); 
     background-repeat: no-repeat;                                    
     background-position: bottom 5px right 4px;                       
     background-color: #D0D0D0;              
@@ -713,7 +713,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/下載_e60012_icon.png"); 
+    background-image: url("../img/下載_e60012_icon.png"); 
     background-repeat: no-repeat;                                    
     background-position: bottom 5px right 4px;                       
     background-color: #D0D0D0;
@@ -732,7 +732,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/寄信_0d0d0d_icon.png");
+    background-image: url("../img/寄信_0d0d0d_icon.png");
     background-repeat: no-repeat;
     background-position: bottom 5px right 4px;
     background-color: #D0D0D0;
@@ -751,7 +751,7 @@ img {
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    background-image: url("./img/寄信_e60012_icon.png");
+    background-image: url("../img/寄信_e60012_icon.png");
     background-repeat: no-repeat;
     background-position: bottom 5px right 4px;
     background-color: #D0D0D0;
@@ -771,7 +771,7 @@ img {
   } */
 .blackBox .blackBox-img p {
   background-repeat:no-repeat;
-  background-image: url(../../img/logo.png);
+  background-image: url(../img/logo.png);
   width: 24px;
   height: 33px;
   position: absolute;

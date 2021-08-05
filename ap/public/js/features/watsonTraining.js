@@ -199,9 +199,10 @@ var watsonTrainingController = function () {
       mainController.getAssistantConfig().then(function (response) {
         if (selectEntity == newEntityName) return Promise.resolve();
         var body = Object.assign({
-          entity: newEntityName
+          entity: selectEntity,
+          newEntity: newEntityName
         }, response);
-        return callWatsonAPI('/createEntity', 'POST', body);
+        return callWatsonAPI('/updateEntity', 'POST', body);
       }).then(function (response) {
         $entitySelector[0].selectize.updateOption(selectEntity, {
           value: newEntityName,
@@ -566,6 +567,9 @@ var watsonTrainingController = function () {
     csvString.split('\n').forEach(function (row) {
       var ss = row.split(',');
       if (ss.length < 2) return;
+      ss = ss.map(function (s) {
+        return s.trim();
+      });
 
       if (intents.hasOwnProperty(ss[1])) {
         intents[ss[1]].push(ss[0]);
@@ -573,13 +577,16 @@ var watsonTrainingController = function () {
         intents[ss[1]] = [ss[0]];
       }
     });
+    console.log(intents, csvString);
     return intents;
   }
 
   function parseCsvEntityData(csvString) {
     var entities = {};
     csvString.split('\n').forEach(function (row) {
-      var ss = row.split(',');
+      var ss = row.split(',').map(function (s) {
+        return s.trim();
+      });
       if (ss.length < 1) return;
 
       if (ss[0] && !entities.hasOwnProperty(ss[0])) {
@@ -694,6 +701,7 @@ var watsonTrainingController = function () {
         initPage();
       }
     })["catch"](function (error) {
+      console.log(error);
       notify.danger('匯入失敗');
     });
   }
@@ -712,12 +720,8 @@ var watsonTrainingController = function () {
       var updateEntity,
           change = false,
           countEntity = 0,
-          countValue = 0;
-      countSynonyms = 0, difference = {
-        newEntities: [],
-        newValues: [],
-        newSynonyms: []
-      };
+          countValue = 0,
+          countSynonyms = 0;
       Object.keys(entities).forEach(function (entity) {
         var targetEntity = result.entities.find(function (e) {
           return e.entity == entity;
@@ -774,7 +778,6 @@ var watsonTrainingController = function () {
           });
         }
       });
-      console.log('difference', difference);
 
       if (change) {
         var msg = "\u78BA\u5B9A\u8981\u65B0\u589E\u8A13\u7DF4? \u5171 ".concat(countEntity, " \u65B0Entity\uFF0C").concat(countValue, " \u65B0Value\uFF0C").concat(countSynonyms, " \u65B0Synonyms");
@@ -799,6 +802,7 @@ var watsonTrainingController = function () {
         initPage();
       }
     })["catch"](function (error) {
+      console.log(error);
       notify.danger('匯入失敗');
     });
   }

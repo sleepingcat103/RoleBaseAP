@@ -130,7 +130,7 @@ function secondsToTime(ss) {
 
 
 function localeTimeTW(time) {
-  return new Date(new Date(time).getTime() - 8 * 60 * 60 * 1000).toLocaleString('zh-Hans-TW');
+  return dayjs(new Date(time).getTime() - 8 * 60 * 60 * 1000).format('YYYY/MM/DD A hh:mm:ss'); // return new Date(new Date(time).getTime() - 8 * 60 * 60 * 1000).toLocaleString('zh-Hans-TW');
 }
 /**
  * a mask to show some message and during a period of time
@@ -295,6 +295,23 @@ function deepCompare() {
 } // 下載CSV大檔
 
 
+function DownloadGreatArray(arr, filename) {
+  var myCSV = [],
+      part = 0;
+  arr.forEach(function (row) {
+    row.map(function (text) {
+      return (text + '').replace(/\n/g, ' ').replace(/,/g, '，');
+    });
+    myCSV.push(row.join(','));
+
+    if (myCSV.length == 10000) {
+      DownloadCSV(myCSV.join('\n'), "".concat(filename, "-").concat(++part));
+      myCSV = [];
+    }
+  });
+  DownloadCSV(myCSV.join('\n'), "".concat(filename).concat(++part == 1 ? '' : "-".concat(part)));
+}
+
 function DownloadGreatCSV($selector, filename) {
   var myCSV = [],
       part = 0;
@@ -316,14 +333,21 @@ function DownloadGreatCSV($selector, filename) {
 
 
 function DownloadCSV(csvContent, tableTitle) {
-  console.log(csvContent, tableTitle);
+  // console.log(csvContent, tableTitle)
   var blobdata = new Blob(["\uFEFF" + csvContent], {
     type: 'text/csv;charset=utf-8'
   });
-  var link = document.createElement("a");
-  link.setAttribute("href", window.URL.createObjectURL(blobdata));
-  link.setAttribute("download", "".concat(tableTitle, " ").concat(new Date(Date.now() + 28800000).toISOString().replace('T', ' ').replace('Z', ''), ".csv"));
-  link.click();
+  var fileName = "".concat(tableTitle, " ").concat(new Date(Date.now() + 28800000).toISOString().replace('T', ' ').replace('Z', ''), ".csv");
+
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    // for IE
+    window.navigator.msSaveOrOpenBlob(blobdata, fileName);
+  } else {
+    var link = document.createElement("a");
+    link.setAttribute("href", window.URL.createObjectURL(blobdata));
+    link.setAttribute("download", fileName);
+    link.click();
+  }
 } // 下載 excel 需搭配 xlsx.full.js
 
 

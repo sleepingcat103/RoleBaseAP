@@ -17,10 +17,18 @@ var reportController = function () {
 
   function __init__() {
     // datatable
-    interactions.datatable = interactions.$.DataTable(datatableConfig);
-    chats.datatable = chats.$.DataTable(datatableConfig);
-    questionRank.datatable = questionRank.$.DataTable(datatableConfig);
-    answerRank.datatable = answerRank.$.DataTable(datatableConfig); // 篩選信心功能
+    interactions.datatable = interactions.$.DataTable(Object.assign(datatableConfig, {
+      "order": [[0, "asc"]]
+    }));
+    chats.datatable = chats.$.DataTable(Object.assign(datatableConfig, {
+      "order": [[0, "asc"]]
+    }));
+    questionRank.datatable = questionRank.$.DataTable(Object.assign(datatableConfig, {
+      "order": [[5, "desc"]]
+    }));
+    answerRank.datatable = answerRank.$.DataTable(Object.assign(datatableConfig, {
+      "order": [[2, "desc"]]
+    })); // 篩選信心功能
 
     $(chats.datatable.table().container()).on('click focus', '#chatsFilterIntent', function (e) {
       console.log(e);
@@ -71,7 +79,11 @@ var reportController = function () {
     $download.on('click', function (e) {
       var no = $tab.find('#myTab a.active').attr('no');
       var handler = [interactions, chats, questionRank, answerRank][no];
-      DownloadGreatCSV(handler.$, handler.name); // let header = handler.datatable.columns().header().toArray().map(th => $(th).text())
+      var header = $(handler.datatable.table().header()).find('th').toArray().map(function (th) {
+        return $(th).text();
+      });
+      var content = handler.datatable.rows().data().toArray();
+      DownloadGreatArray([header].concat(content), handler.name); // let header = handler.datatable.columns().header().toArray().map(th => $(th).text())
       // let data = [header].concat(handler.datatable.rows().data().toArray());
       // let sheet = XLSX.utils.aoa_to_sheet(data);
       // openDownloadDialog(sheet2blob(sheet), handler.name + '.xlsx');
@@ -220,8 +232,9 @@ var reportController = function () {
       return body;
     },
     doSearch: function doSearch(body) {
+      var sortedData = [];
+
       var searchHandler = function searchHandler(response) {
-        var sortedData = [];
         response.filter(function (row) {
           return row.USER_SAY.trim();
         }).forEach(function (row) {
@@ -248,24 +261,22 @@ var reportController = function () {
             target.confidences.push(INTENT_CONFIDENCE);
           }
         });
+      };
+
+      return mainController.rollingSearch(body, findSetLog, searchHandler).then(function () {
         var rows = sortedData.sort(function (a, b) {
-          var A = a.action.button + a.action.text;
-          var B = b.action.button + b.action.text;
-          return A > b ? -1 : A < B ? -1 : 0;
+          return b.action.text - a.action.text;
         }).map(function (row, index) {
           var confidences = row.confidences.filter(function (c) {
             return c > 0;
           });
-          console.log('confidences', confidences);
           var averageConfidence = confidences.length == 0 ? 0 : (confidences.reduce(function (a, b) {
             return a + b;
           }, 0) || 0) / confidences.length;
           return [index + 1, htmlEncode(row.text), row.intent, averageConfidence, row.action.button, row.action.text];
         });
         questionRank.datatable.rows.add(rows).draw();
-      };
-
-      return mainController.rollingSearch(body, findSetLog, searchHandler)["catch"](function (error) {
+      })["catch"](function (error) {
         console.error(error);
       });
     }
@@ -299,12 +310,15 @@ var reportController = function () {
       return body;
     },
     doSearch: function doSearch(body) {
+      var sortedData = {};
+
       var searchHandler = function searchHandler(response) {
-        var sortedData = {};
         response.forEach(function (row) {
           var ANSWER_ID = row.ANSWER_ID,
               ANS_NAME = row.ANS_NAME,
-              DETAIL = row.DETAIL;
+              DETAIL = row.DETAIL; // 過濾空值
+
+          if (!ANSWER_ID || new RegExp(/^\s*$/g).test(ANSWER_ID)) return;
           var target = sortedData.hasOwnProperty(ANSWER_ID);
 
           if (!target) {
@@ -318,17 +332,16 @@ var reportController = function () {
             sortedData[ANSWER_ID].count++;
           }
         });
+      };
+
+      return mainController.rollingSearch(body, findSetLog, searchHandler).then(function () {
         var rows = Object.values(sortedData).sort(function (a, b) {
-          var A = a.count;
-          var B = b.count;
-          return A > b ? -1 : A < B ? -1 : 0;
+          return b.count - a.count;
         }).map(function (row, index) {
           return [index + 1, row.ansId, row.count, row.ansName, row.datail];
         });
         answerRank.datatable.rows.add(rows).draw();
-      };
-
-      return mainController.rollingSearch(body, findSetLog, searchHandler)["catch"](function (error) {
+      })["catch"](function (error) {
         console.error(error);
       });
     }

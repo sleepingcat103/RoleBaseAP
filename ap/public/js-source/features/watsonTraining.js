@@ -216,8 +216,8 @@ var watsonTrainingController = (function() {
             mainController.getAssistantConfig()
             .then(response => {
                 if(selectEntity == newEntityName) return Promise.resolve();
-                let body = Object.assign({ entity: newEntityName }, response);
-                return callWatsonAPI('/createEntity', 'POST', body);
+                let body = Object.assign({ entity: selectEntity, newEntity: newEntityName }, response);
+                return callWatsonAPI('/updateEntity', 'POST', body);
             })
 			.then(response => {
 				$entitySelector[0].selectize.updateOption(selectEntity, { value: newEntityName, text: newEntityName });
@@ -525,7 +525,7 @@ var watsonTrainingController = (function() {
     // 初始化頁面資訊
     function initPage() {
         // get data
-        let maskId = stableMask('取得資料中，請稍後')
+        let maskId = stableMask('取得資料中，請稍後');
 
         mainController.getAssistantConfig()
         .then(response => {
@@ -709,20 +709,21 @@ var watsonTrainingController = (function() {
         let intents = {};
         csvString.split('\n').forEach(row => {
             let ss = row.split(',');
-            if(ss.length < 2) return ;
+            if(ss.length < 2) return;
+            ss = ss.map(s => s.trim());
             if(intents.hasOwnProperty(ss[1])) {
                 intents[ss[1]].push(ss[0]);
             } else {
                 intents[ss[1]] = [ss[0]];
             }
         })
-        
+        console.log(intents, csvString)
         return intents;
     }
     function parseCsvEntityData(csvString) {
         let entities = {};
         csvString.split('\n').forEach(row => {
-            let ss = row.split(',');
+            let ss = row.split(',').map(s => s.trim());
             if(ss.length < 1) return;
 
             if(ss[0] && !entities.hasOwnProperty(ss[0])) {
@@ -830,6 +831,7 @@ var watsonTrainingController = (function() {
             }
         })
         .catch(error => {
+            console.log(error);
             notify.danger('匯入失敗');
         });
     }
@@ -845,13 +847,8 @@ var watsonTrainingController = (function() {
             let updateEntity, 
                 change = false,
                 countEntity = 0,
-                countValue = 0
-                countSynonyms = 0,
-                difference = {
-                    newEntities: [],
-                    newValues: [],
-                    newSynonyms: []
-                };
+                countValue = 0,
+                countSynonyms = 0;
                 
             Object.keys(entities).forEach(entity => {
                 let targetEntity = result.entities.find(e => e.entity == entity);
@@ -894,7 +891,6 @@ var watsonTrainingController = (function() {
                     });
                 }
             })
-            console.log('difference', difference)
 
             if(change) {
                 let msg = `確定要新增訓練? 共 ${ countEntity } 新Entity，${ countValue } 新Value，${ countSynonyms } 新Synonyms`
@@ -919,6 +915,7 @@ var watsonTrainingController = (function() {
             }
         })
         .catch(error => {
+            console.log(error);
             notify.danger('匯入失敗');
         });
     }

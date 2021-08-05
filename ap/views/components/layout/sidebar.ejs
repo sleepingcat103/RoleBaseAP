@@ -9,7 +9,7 @@
       <% authorities.forEach(function(authority, index) { %>
         <option 
           <%= index === 0 ? 'selected' : '' %>
-          value="<%= index %>"
+          value="<%= authority.PROJECT_ID %>"
           projectId="<%= authority.PROJECT_ID %>">
           <%= authority.PROJECT_NAME %>
         </option>

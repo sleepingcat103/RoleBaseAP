@@ -120,13 +120,16 @@ var traceLogController = (function() {
         })
         // 下載按鈕
         $download.on('click', e => {
-            
-            DownloadGreatCSV($tab.find('table'), '意見回覆');
+
+            let header = $(traceLogDatatable.table().header()).find('th').toArray().map(th => $(th).text());
+            let content = traceLogDatatable.rows().data().toArray();
+
+            DownloadGreatArray([header].concat(content), '使用歷程');
 
             // let header = traceLogDatatable.columns().header().toArray().map(th => $(th).text())
             // let data = [header].concat(traceLogDatatable.rows().data().toArray());
             // let sheet = XLSX.utils.aoa_to_sheet(data);
-            // openDownloadDialog(sheet2blob(sheet), '意見回覆' + '.xlsx');
+            // openDownloadDialog(sheet2blob(sheet), '使用歷程' + '.xlsx');
         })
 
         initPage();
