@@ -49,7 +49,7 @@
     "tedious": "^6.7.1",
     "typedi": "^0.8.0",
     "xml2js": "^0.4.23",
-    "xss": "^1.0.6"
+    "xss": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
